@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { Workflow } from '../types';
 import { DownloadIcon } from './icons';
-import { WorkflowModal } from './WorkflowModal';
+import { EnhancedWorkflowModal } from './EnhancedWorkflowModal';
 
 interface WorkflowCardProps {
   workflow: Workflow;
@@ -127,8 +127,8 @@ export const WorkflowCard: React.FC<WorkflowCardProps> = ({ workflow }) => {
       </div>
       </div>
 
-      {/* Workflow Preview Modal */}
-      <WorkflowModal 
+      {/* Enhanced Workflow Preview Modal */}
+      <EnhancedWorkflowModal 
         workflow={workflow}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
