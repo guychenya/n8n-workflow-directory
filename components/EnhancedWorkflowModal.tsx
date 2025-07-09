@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import type { Workflow } from '../types';
 import { EnhancedWorkflowVisualizer } from './EnhancedWorkflowVisualizer';
+import { NodeCodeSnippet } from './NodeCodeSnippet';
 
 interface EnhancedWorkflowModalProps {
   workflow: Workflow | null;
@@ -76,6 +77,8 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'visual' | 'details'>('visual');
+  const [selectedNode, setSelectedNode] = useState<N8nNode | null>(null);
+  const [showCodeSnippet, setShowCodeSnippet] = useState(false);
 
   useEffect(() => {
     if (isOpen && workflow) {
@@ -168,6 +171,11 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
     });
     
     return nodesByType;
+  };
+
+  const handleNodeClick = (node: N8nNode) => {
+    setSelectedNode(node);
+    setShowCodeSnippet(true);
   };
 
   const handleKeyPress = (e: KeyboardEvent) => {
@@ -333,6 +341,9 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
 
                   <CollapsibleSection title="Nodes by Type" icon="🔧">
                     <div className="space-y-4">
+                      <div className="text-sm text-gray-600 dark:text-slate-400 mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                        💡 <strong>Click on any node</strong> to view its configuration, parameters, and code snippet
+                      </div>
                       {Object.entries(getNodesByType()).map(([type, nodes]) => (
                         <div key={type} className="border border-gray-200 dark:border-slate-700 rounded-lg p-4">
                           <h4 className="font-semibold text-text-light dark:text-text-dark mb-3 flex items-center gap-2">
@@ -343,10 +354,27 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
                           </h4>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                             {nodes.map((node) => (
-                              <div key={node.id} className="flex items-center gap-2 p-2 bg-gray-50 dark:bg-slate-700 rounded">
+                              <button
+                                key={node.id}
+                                onClick={() => handleNodeClick(node)}
+                                className="flex items-center gap-2 p-3 bg-gray-50 dark:bg-slate-700 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors cursor-pointer border border-transparent hover:border-primary/30 group text-left"
+                              >
                                 <span className="text-lg">{getNodeTypeIcon(node.type)}</span>
-                                <span className="text-sm text-gray-700 dark:text-slate-300">{node.name}</span>
-                              </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="text-sm font-medium text-gray-700 dark:text-slate-300 group-hover:text-primary transition-colors">
+                                    {node.name}
+                                  </div>
+                                  <div className="text-xs text-gray-500 dark:text-slate-400 truncate">
+                                    {node.parameters && Object.keys(node.parameters).length > 0 
+                                      ? `${Object.keys(node.parameters).length} parameters` 
+                                      : 'No parameters'
+                                    }
+                                  </div>
+                                </div>
+                                <div className="text-xs text-gray-400 dark:text-slate-500 group-hover:text-primary transition-colors">
+                                  View Code →
+                                </div>
+                              </button>
                             ))}
                           </div>
                         </div>
@@ -432,6 +460,18 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Node Code Snippet Modal */}
+      {selectedNode && (
+        <NodeCodeSnippet 
+          node={selectedNode}
+          isOpen={showCodeSnippet}
+          onClose={() => {
+            setShowCodeSnippet(false);
+            setSelectedNode(null);
+          }}
+        />
+      )}
     </div>
   );
 };
