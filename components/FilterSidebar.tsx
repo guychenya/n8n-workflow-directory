@@ -93,10 +93,10 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
     onToggle: () => void;
     children: React.ReactNode;
   }) => (
-    <div className="border-b border-slate-700 pb-4 mb-4">
+    <div className="border-b border-gray-200 dark:border-slate-700 pb-4 mb-4">
       <button
         onClick={onToggle}
-        className="flex items-center justify-between w-full text-left text-slate-200 hover:text-brand-primary transition-colors"
+        className="flex items-center justify-between w-full text-left text-text-light dark:text-slate-200 hover:text-primary transition-colors"
       >
         <span className="font-semibold">{title}</span>
         <span className="text-sm">
@@ -155,7 +155,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
             type="text"
             value={filters.searchTerm}
             onChange={(e) => onFiltersChange({ ...filters, searchTerm: e.target.value })}
-            className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-md text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent"
+            className="w-full px-3 py-2 bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md text-text-light dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
             placeholder="Search by title, service, or description..."
           />
         </div>
@@ -175,8 +175,8 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 onChange={() => handleCategoryChange(name)}
                 className="mr-3 text-primary focus:ring-primary"
               />
-              <span className="text-sm text-slate-300 flex-1">{name}</span>
-              <span className="text-xs text-slate-500">({count})</span>
+              <span className="text-sm text-text-light dark:text-slate-300 flex-1">{name}</span>
+              <span className="text-xs text-gray-500 dark:text-slate-500">({count})</span>
             </label>
           ))}
         </FilterSection>
@@ -263,15 +263,15 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
         </FilterSection>
 
         {/* Active Filters Summary */}
-        <div className="mt-6 pt-4 border-t border-slate-700">
-          <h3 className="text-sm font-medium text-slate-300 mb-3">Active Filters</h3>
+        <div className="mt-6 pt-4 border-t border-gray-200 dark:border-slate-700">
+          <h3 className="text-sm font-medium text-text-light dark:text-slate-300 mb-3">Active Filters</h3>
           <div className="flex flex-wrap gap-2">
             {filters.category !== 'All' && (
-              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-brand-primary/20 text-brand-primary">
+              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-primary/20 text-primary">
                 {filters.category}
                 <button
                   onClick={() => handleCategoryChange('All')}
-                  className="ml-1 hover:text-brand-primary/70"
+                  className="ml-1 hover:text-primary/70"
                 >
                   ✕
                 </button>
