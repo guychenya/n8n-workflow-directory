@@ -127,7 +127,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       <div className={`
         fixed lg:relative lg:translate-x-0 transition-all duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
-        ${isCollapsed ? 'lg:w-0 lg:overflow-hidden' : 'lg:w-80'}
+        ${isCollapsed ? 'lg:w-0 lg:overflow-hidden lg:p-0' : 'lg:w-80 lg:p-6'}
         top-0 left-0 h-full lg:h-auto bg-sidebar-light dark:bg-sidebar-bg border-r border-gray-200 dark:border-slate-700 
         w-80 p-6 overflow-y-auto z-50
       `}>
