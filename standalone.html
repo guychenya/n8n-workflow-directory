@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>n8n Workflow Directory - Enhanced</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'brand-primary': '#1A827A',
+              'brand-secondary': '#FFC23D',
+              'slate': {
+                850: '#171f34'
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+          },
+        },
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .line-clamp-2 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .line-clamp-3 {
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .overflow-y-auto::-webkit-scrollbar { width: 6px; }
+        .overflow-y-auto::-webkit-scrollbar-track { background: #334155; border-radius: 3px; }
+        .overflow-y-auto::-webkit-scrollbar-thumb { background: #64748b; border-radius: 3px; }
+        .overflow-y-auto::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-300">
+    <div id="root"></div>
+    
+    <script type="module">
+        import React, { useState, useMemo } from 'https://esm.sh/react@19.1.0';
+        import { createRoot } from 'https://esm.sh/react-dom@19.1.0/client';
+
+        // Sample workflow data (first 20 workflows from our enhanced dataset)
+        const workflows = [
+            {
+                id: 1,
+                title: "Telegram Schedule Automation Scheduled",
+                description: "Automation workflow integrating Telegram, Schedule. This workflow is triggered by events and helps automate processes between these services.",
+                category: "Communication",
+                fileName: "0001_Telegram_Schedule_Automation_Scheduled.json",
+                services: ["Telegram", "Schedule"],
+                triggerType: "Scheduled",
+                operation: "Automation",
+                complexity: "Advanced",
+                tags: ["Telegram", "Schedule", "Scheduled", "Automation", "Advanced"]
+            },
+            {
+                id: 2,
+                title: "Manual Totp Automation Triggered",
+                description: "Automation workflow integrating Manual, Totp. This workflow is manually triggered and helps automate processes between these services.",
+                category: "Automation",
+                fileName: "0002_Manual_Totp_Automation_Triggered.json",
+                services: ["Manual", "Totp"],
+                triggerType: "Manual",
+                operation: "Automation",
+                complexity: "Advanced",
+                tags: ["Manual", "Totp", "Manual", "Automation", "Advanced"]
+            },
+            {
+                id: 3,
+                title: "Bitwarden Automate",
+                description: "Process workflow integrating Bitwarden. This workflow is manually triggered and helps automate processes between these services.",
+                category: "Automation",
+                fileName: "0003_Bitwarden_Automate.json",
+                services: ["Bitwarden"],
+                triggerType: "Manual",
+                operation: "Process",
+                complexity: "Simple",
+                tags: ["Bitwarden", "Manual", "Process", "Simple"]
+            },
+            {
+                id: 4,
+                title: "GoogleSheets Typeform Automate Triggered",
+                description: "Process workflow integrating GoogleSheets, Typeform. This workflow is triggered by events and helps automate processes between these services.",
+                category: "Data & Analytics",
+                fileName: "0004_GoogleSheets_Typeform_Automate_Triggered.json",
+                services: ["GoogleSheets", "Typeform"],
+                triggerType: "Event",
+                operation: "Process",
+                complexity: "Advanced",
+                tags: ["GoogleSheets", "Typeform", "Event", "Process", "Advanced"]
+            },
+            {
+                id: 5,
+                title: "Manual Twitter Create Triggered",
+                description: "Create workflow integrating Manual, Twitter. This workflow is triggered by events and helps automate processes between these services.",
+                category: "Marketing",
+                fileName: "0005_Manual_Twitter_Create_Triggered.json",
+                services: ["Manual", "Twitter"],
+                triggerType: "Event",
+                operation: "Create",
+                complexity: "Advanced",
+                tags: ["Manual", "Twitter", "Event", "Create", "Advanced"]
+            },
+            {
+                id: 6,
+                title: "Openweathermap Cron Automate Scheduled",
+                description: "Process workflow integrating Openweathermap, Cron. This workflow is runs on schedule and helps automate processes between these services.",
+                category: "Integration",
+                fileName: "0006_Openweathermap_Cron_Automate_Scheduled.json",
+                services: ["Openweathermap", "Cron"],
+                triggerType: "Scheduled",
+                operation: "Process",
+                complexity: "Advanced",
+                tags: ["Openweathermap", "Cron", "Scheduled", "Process", "Advanced"]
+            }
+        ];
+
+        // Filter component
+        const FilterSidebar = ({ filters, onFiltersChange, isOpen, onClose }) => {
+            const [expandedSections, setExpandedSections] = useState(new Set(['categories', 'services']));
+            
+            const categories = ['All', 'Communication', 'Data & Analytics', 'Marketing', 'Integration', 'Automation'];
+            const services = ['Telegram', 'Manual', 'GoogleSheets', 'Twitter', 'Openweathermap', 'Bitwarden', 'Typeform', 'Cron'];
+            const triggerTypes = ['Manual', 'Scheduled', 'Event', 'Webhook'];
+            const operations = ['Automation', 'Create', 'Process', 'Update', 'Send'];
+
+            const toggleSection = (section) => {
+                const newExpanded = new Set(expandedSections);
+                if (newExpanded.has(section)) {
+                    newExpanded.delete(section);
+                } else {
+                    newExpanded.add(section);
+                }
+                setExpandedSections(newExpanded);
+            };
+
+            const handleCategoryChange = (category) => {
+                onFiltersChange({
+                    ...filters,
+                    category: filters.category === category ? 'All' : category
+                });
+            };
+
+            const FilterSection = ({ title, isExpanded, onToggle, children }) => (
+                React.createElement('div', { className: "border-b border-slate-700 pb-4 mb-4" },
+                    React.createElement('button', {
+                        onClick: onToggle,
+                        className: "flex items-center justify-between w-full text-left text-slate-200 hover:text-brand-primary transition-colors"
+                    },
+                        React.createElement('span', { className: "font-semibold" }, title),
+                        React.createElement('span', { className: "text-sm" }, isExpanded ? '−' : '+')
+                    ),
+                    isExpanded && React.createElement('div', { className: "mt-3 space-y-2" }, children)
+                )
+            );
+
+            return React.createElement('div', {
+                className: `fixed lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'} top-0 left-0 h-full lg:h-auto bg-slate-800 border-r border-slate-700 w-80 p-6 overflow-y-auto z-50`
+            },
+                React.createElement('div', { className: "flex items-center justify-between mb-6" },
+                    React.createElement('h2', { className: "text-lg font-bold text-slate-100" }, "Filters"),
+                    React.createElement('button', {
+                        onClick: onClose,
+                        className: "lg:hidden text-slate-400 hover:text-slate-200 transition-colors"
+                    }, "✕")
+                ),
+                
+                React.createElement('div', { className: "mb-6" },
+                    React.createElement('label', { className: "block text-sm font-medium text-slate-300 mb-2" }, "Search workflows"),
+                    React.createElement('input', {
+                        type: "text",
+                        value: filters.searchTerm,
+                        onChange: (e) => onFiltersChange({ ...filters, searchTerm: e.target.value }),
+                        className: "w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-md text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent",
+                        placeholder: "Search by title, service, or description..."
+                    })
+                ),
+
+                React.createElement(FilterSection, {
+                    title: "Categories",
+                    isExpanded: expandedSections.has('categories'),
+                    onToggle: () => toggleSection('categories')
+                },
+                    categories.map(category => 
+                        React.createElement('label', { key: category, className: "flex items-center cursor-pointer hover:bg-slate-700 p-2 rounded" },
+                            React.createElement('input', {
+                                type: "radio",
+                                name: "category",
+                                checked: filters.category === category,
+                                onChange: () => handleCategoryChange(category),
+                                className: "mr-3 text-brand-primary focus:ring-brand-primary"
+                            }),
+                            React.createElement('span', { className: "text-sm text-slate-300 flex-1" }, category)
+                        )
+                    )
+                ),
+
+                React.createElement(FilterSection, {
+                    title: "Services",
+                    isExpanded: expandedSections.has('services'),
+                    onToggle: () => toggleSection('services')
+                },
+                    services.map(service => 
+                        React.createElement('label', { key: service, className: "flex items-center cursor-pointer hover:bg-slate-700 p-2 rounded" },
+                            React.createElement('input', {
+                                type: "checkbox",
+                                checked: filters.services?.includes(service) || false,
+                                onChange: () => {
+                                    const currentServices = filters.services || [];
+                                    const newServices = currentServices.includes(service)
+                                        ? currentServices.filter(s => s !== service)
+                                        : [...currentServices, service];
+                                    onFiltersChange({ ...filters, services: newServices });
+                                },
+                                className: "mr-3 text-brand-primary focus:ring-brand-primary"
+                            }),
+                            React.createElement('span', { className: "text-sm text-slate-300" }, service)
+                        )
+                    )
+                )
+            );
+        };
+
+        // Workflow card component
+        const WorkflowCard = ({ workflow }) => {
+            const categoryColors = {
+                'Communication': 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+                'Data & Analytics': 'bg-green-500/20 text-green-400 border-green-500/30',
+                'Marketing': 'bg-red-500/20 text-red-400 border-red-500/30',
+                'Integration': 'bg-gray-500/20 text-gray-400 border-gray-500/30',
+                'Automation': 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'
+            };
+
+            const complexityColors = {
+                'Simple': 'bg-green-500/10 text-green-400 border-green-500/20',
+                'Advanced': 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
+                'Multi-step': 'bg-red-500/10 text-red-400 border-red-500/20'
+            };
+
+            const triggerIcons = {
+                'Manual': '👆',
+                'Webhook': '🔗',
+                'Scheduled': '⏰',
+                'Event': '⚡',
+                'HTTP': '🌐'
+            };
+
+            const categoryColor = categoryColors[workflow.category] || categoryColors['Integration'];
+            const complexityColor = complexityColors[workflow.complexity] || complexityColors['Simple'];
+            const triggerIcon = triggerIcons[workflow.triggerType] || '🔧';
+
+            return React.createElement('div', {
+                className: "bg-slate-800 rounded-lg shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-2xl border border-slate-700/50 hover:border-brand-primary/30"
+            },
+                React.createElement('div', { className: "p-4 border-b border-slate-700/50" },
+                    React.createElement('div', { className: "flex items-center justify-between mb-2" },
+                        React.createElement('span', { className: `inline-block text-xs font-semibold px-2.5 py-1 rounded-full border ${categoryColor}` }, workflow.category),
+                        React.createElement('span', { className: `inline-block text-xs font-semibold px-2.5 py-1 rounded-full border ${complexityColor}` }, workflow.complexity)
+                    ),
+                    React.createElement('div', { className: "flex items-center gap-2 text-xs text-slate-400" },
+                        React.createElement('span', { className: "flex items-center gap-1" }, `${triggerIcon} ${workflow.triggerType}`),
+                        React.createElement('span', { className: "text-slate-600" }, "•"),
+                        React.createElement('span', null, workflow.operation)
+                    )
+                ),
+                React.createElement('div', { className: "p-4 flex-grow" },
+                    React.createElement('h3', { className: "text-lg font-bold text-slate-100 mb-2 line-clamp-2" }, workflow.title),
+                    React.createElement('p', { className: "text-slate-400 text-sm leading-relaxed mb-4 line-clamp-3" }, workflow.description),
+                    React.createElement('div', { className: "mb-4" },
+                        React.createElement('div', { className: "flex flex-wrap gap-1 mb-2" },
+                            workflow.services.slice(0, 3).map(service => 
+                                React.createElement('span', { 
+                                    key: service, 
+                                    className: "inline-block bg-slate-700/50 text-slate-300 text-xs px-2 py-1 rounded border border-slate-600/50" 
+                                }, service)
+                            ),
+                            workflow.services.length > 3 && React.createElement('span', { 
+                                className: "inline-block bg-slate-700/50 text-slate-400 text-xs px-2 py-1 rounded border border-slate-600/50" 
+                            }, `+${workflow.services.length - 3} more`)
+                        )
+                    )
+                ),
+                React.createElement('div', { className: "bg-slate-800/50 p-4 mt-auto border-t border-slate-700/50" },
+                    React.createElement('button', {
+                        className: "w-full flex items-center justify-center gap-2 bg-gradient-to-r from-brand-primary to-brand-primary/80 text-white font-semibold py-3 px-4 rounded-md hover:from-brand-primary/90 hover:to-brand-primary/70 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-brand-primary shadow-lg hover:shadow-xl",
+                        onClick: () => alert(`Would download: ${workflow.fileName}`)
+                    },
+                        React.createElement('span', null, "📥"),
+                        React.createElement('span', null, "Download Workflow")
+                    )
+                )
+            );
+        };
+
+        // Main app component
+        const App = () => {
+            const [filters, setFilters] = useState({
+                category: 'All',
+                services: [],
+                triggerType: '',
+                operation: '',
+                complexity: '',
+                searchTerm: ''
+            });
+            const [sidebarOpen, setSidebarOpen] = useState(false);
+
+            const filteredWorkflows = useMemo(() => {
+                return workflows.filter(workflow => {
+                    if (filters.category !== 'All' && workflow.category !== filters.category) {
+                        return false;
+                    }
+                    if (filters.services.length > 0) {
+                        const hasMatchingService = filters.services.some(service =>
+                            workflow.services.includes(service)
+                        );
+                        if (!hasMatchingService) return false;
+                    }
+                    if (filters.searchTerm) {
+                        const searchLower = filters.searchTerm.toLowerCase();
+                        const matchesTitle = workflow.title.toLowerCase().includes(searchLower);
+                        const matchesDescription = workflow.description.toLowerCase().includes(searchLower);
+                        const matchesServices = workflow.services.some(service => 
+                            service.toLowerCase().includes(searchLower)
+                        );
+                        if (!matchesTitle && !matchesDescription && !matchesServices) {
+                            return false;
+                        }
+                    }
+                    return true;
+                });
+            }, [filters]);
+
+            return React.createElement('div', { className: "min-h-screen bg-slate-850 font-sans" },
+                React.createElement('div', { className: "flex" },
+                    React.createElement(FilterSidebar, {
+                        filters,
+                        onFiltersChange: setFilters,
+                        isOpen: sidebarOpen,
+                        onClose: () => setSidebarOpen(false)
+                    }),
+                    React.createElement('div', { className: "flex-1 lg:ml-0" },
+                        React.createElement('div', { className: "container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12" },
+                            React.createElement('header', { className: "text-center mb-8 sm:mb-12" },
+                                React.createElement('h1', { className: "text-4xl sm:text-6xl font-bold text-slate-100 mb-4" }, "n8n Workflow Directory"),
+                                React.createElement('p', { className: "text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto" }, 
+                                    "Enhanced workflow browser with intelligent categorization and Amazon-style filtering"
+                                )
+                            ),
+                            React.createElement('div', { className: "lg:hidden mb-6" },
+                                React.createElement('button', {
+                                    onClick: () => setSidebarOpen(true),
+                                    className: "flex items-center gap-2 px-4 py-2 bg-slate-800 text-slate-200 rounded-md border border-slate-700 hover:bg-slate-700 transition-colors"
+                                },
+                                    "🔍 Filters",
+                                    (filters.category !== 'All' || filters.services.length > 0 || filters.searchTerm) && 
+                                    React.createElement('span', { className: "bg-brand-primary text-white text-xs px-2 py-0.5 rounded-full" }, "Active")
+                                )
+                            ),
+                            React.createElement('main', null,
+                                React.createElement('div', { className: "mb-6" },
+                                    React.createElement('div', { className: "text-slate-300" },
+                                        React.createElement('span', { className: "text-lg font-semibold text-slate-100" }, filteredWorkflows.length),
+                                        React.createElement('span', { className: "ml-2" }, filteredWorkflows.length === 1 ? 'workflow' : 'workflows'),
+                                        filters.category !== 'All' && React.createElement('span', { className: "ml-2 text-slate-400" }, `in ${filters.category}`)
+                                    )
+                                ),
+                                React.createElement('div', { className: "grid gap-6 md:grid-cols-2 lg:grid-cols-3" },
+                                    filteredWorkflows.map(workflow => 
+                                        React.createElement(WorkflowCard, { key: workflow.id, workflow })
+                                    )
+                                )
+                            ),
+                            React.createElement('footer', { className: "text-center mt-12 text-slate-500 text-sm" },
+                                React.createElement('p', null, "✨ Enhanced n8n Workflow Directory - Built for the n8n community")
+                            )
+                        )
+                    )
+                )
+            );
+        };
+
+        // Render the app
+        const root = createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
+    </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "name": "n8n Workflow Directory",
+  "description": "A self-contained, client-side web application to browse, filter, and download n8n workflows. Built with React and Tailwind CSS for a modern, responsive experience.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}

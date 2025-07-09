@@ -1,0 +1,329 @@
+import React, { useState } from 'react';
+import type { FilterState, ServiceCategory } from '../types';
+
+interface FilterSidebarProps {
+  filters: FilterState;
+  onFiltersChange: (filters: FilterState) => void;
+  serviceCategories: ServiceCategory[];
+  allServices: string[];
+  triggerTypes: string[];
+  operations: string[];
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export const FilterSidebar: React.FC<FilterSidebarProps> = ({
+  filters,
+  onFiltersChange,
+  serviceCategories,
+  allServices,
+  triggerTypes,
+  operations,
+  isOpen,
+  onClose
+}) => {
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(
+    new Set(['categories', 'services', 'triggers'])
+  );
+
+  const toggleSection = (section: string) => {
+    const newExpanded = new Set(expandedSections);
+    if (newExpanded.has(section)) {
+      newExpanded.delete(section);
+    } else {
+      newExpanded.add(section);
+    }
+    setExpandedSections(newExpanded);
+  };
+
+  const handleCategoryChange = (category: string) => {
+    onFiltersChange({
+      ...filters,
+      category: filters.category === category ? 'All' : category
+    });
+  };
+
+  const handleServiceChange = (service: string) => {
+    const currentServices = filters.services || [];
+    const newServices = currentServices.includes(service)
+      ? currentServices.filter(s => s !== service)
+      : [...currentServices, service];
+    
+    onFiltersChange({
+      ...filters,
+      services: newServices
+    });
+  };
+
+  const handleTriggerChange = (trigger: string) => {
+    onFiltersChange({
+      ...filters,
+      triggerType: filters.triggerType === trigger ? '' : trigger
+    });
+  };
+
+  const handleOperationChange = (operation: string) => {
+    onFiltersChange({
+      ...filters,
+      operation: filters.operation === operation ? '' : operation
+    });
+  };
+
+  const handleComplexityChange = (complexity: string) => {
+    onFiltersChange({
+      ...filters,
+      complexity: filters.complexity === complexity ? '' : complexity
+    });
+  };
+
+  const clearAllFilters = () => {
+    onFiltersChange({
+      category: 'All',
+      services: [],
+      triggerType: '',
+      operation: '',
+      complexity: '',
+      searchTerm: ''
+    });
+  };
+
+  const FilterSection = ({ title, isExpanded, onToggle, children }: {
+    title: string;
+    isExpanded: boolean;
+    onToggle: () => void;
+    children: React.ReactNode;
+  }) => (
+    <div className="border-b border-slate-700 pb-4 mb-4">
+      <button
+        onClick={onToggle}
+        className="flex items-center justify-between w-full text-left text-slate-200 hover:text-brand-primary transition-colors"
+      >
+        <span className="font-semibold">{title}</span>
+        <span className="text-sm">
+          {isExpanded ? '−' : '+'}
+        </span>
+      </button>
+      {isExpanded && (
+        <div className="mt-3 space-y-2">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <>
+      {/* Mobile overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          onClick={onClose}
+        />
+      )}
+      
+      {/* Sidebar */}
+      <div className={`
+        fixed lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out
+        ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+        top-0 left-0 h-full lg:h-auto bg-slate-800 border-r border-slate-700 
+        w-80 p-6 overflow-y-auto z-50
+      `}>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-lg font-bold text-slate-100">Filters</h2>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={clearAllFilters}
+              className="text-sm text-slate-400 hover:text-slate-200 transition-colors"
+            >
+              Clear all
+            </button>
+            <button
+              onClick={onClose}
+              className="lg:hidden text-slate-400 hover:text-slate-200 transition-colors"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+
+        {/* Search */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-slate-300 mb-2">
+            Search workflows
+          </label>
+          <input
+            type="text"
+            value={filters.searchTerm}
+            onChange={(e) => onFiltersChange({ ...filters, searchTerm: e.target.value })}
+            className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-md text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent"
+            placeholder="Search by title, service, or description..."
+          />
+        </div>
+
+        {/* Categories */}
+        <FilterSection
+          title="Categories"
+          isExpanded={expandedSections.has('categories')}
+          onToggle={() => toggleSection('categories')}
+        >
+          {serviceCategories.map(({ name, count }) => (
+            <label key={name} className="flex items-center cursor-pointer hover:bg-slate-700 p-2 rounded">
+              <input
+                type="radio"
+                name="category"
+                checked={filters.category === name}
+                onChange={() => handleCategoryChange(name)}
+                className="mr-3 text-brand-primary focus:ring-brand-primary"
+              />
+              <span className="text-sm text-slate-300 flex-1">{name}</span>
+              <span className="text-xs text-slate-500">({count})</span>
+            </label>
+          ))}
+        </FilterSection>
+
+        {/* Services */}
+        <FilterSection
+          title="Services"
+          isExpanded={expandedSections.has('services')}
+          onToggle={() => toggleSection('services')}
+        >
+          <div className="max-h-64 overflow-y-auto">
+            {allServices.slice(0, 20).map(service => (
+              <label key={service} className="flex items-center cursor-pointer hover:bg-slate-700 p-2 rounded">
+                <input
+                  type="checkbox"
+                  checked={filters.services?.includes(service) || false}
+                  onChange={() => handleServiceChange(service)}
+                  className="mr-3 text-brand-primary focus:ring-brand-primary"
+                />
+                <span className="text-sm text-slate-300">{service}</span>
+              </label>
+            ))}
+          </div>
+        </FilterSection>
+
+        {/* Trigger Types */}
+        <FilterSection
+          title="Trigger Types"
+          isExpanded={expandedSections.has('triggers')}
+          onToggle={() => toggleSection('triggers')}
+        >
+          {triggerTypes.map(trigger => (
+            <label key={trigger} className="flex items-center cursor-pointer hover:bg-slate-700 p-2 rounded">
+              <input
+                type="radio"
+                name="triggerType"
+                checked={filters.triggerType === trigger}
+                onChange={() => handleTriggerChange(trigger)}
+                className="mr-3 text-brand-primary focus:ring-brand-primary"
+              />
+              <span className="text-sm text-slate-300">{trigger}</span>
+            </label>
+          ))}
+        </FilterSection>
+
+        {/* Operations */}
+        <FilterSection
+          title="Operations"
+          isExpanded={expandedSections.has('operations')}
+          onToggle={() => toggleSection('operations')}
+        >
+          {operations.map(operation => (
+            <label key={operation} className="flex items-center cursor-pointer hover:bg-slate-700 p-2 rounded">
+              <input
+                type="radio"
+                name="operation"
+                checked={filters.operation === operation}
+                onChange={() => handleOperationChange(operation)}
+                className="mr-3 text-brand-primary focus:ring-brand-primary"
+              />
+              <span className="text-sm text-slate-300">{operation}</span>
+            </label>
+          ))}
+        </FilterSection>
+
+        {/* Complexity */}
+        <FilterSection
+          title="Complexity"
+          isExpanded={expandedSections.has('complexity')}
+          onToggle={() => toggleSection('complexity')}
+        >
+          {['Simple', 'Advanced', 'Multi-step'].map(complexity => (
+            <label key={complexity} className="flex items-center cursor-pointer hover:bg-slate-700 p-2 rounded">
+              <input
+                type="radio"
+                name="complexity"
+                checked={filters.complexity === complexity}
+                onChange={() => handleComplexityChange(complexity)}
+                className="mr-3 text-brand-primary focus:ring-brand-primary"
+              />
+              <span className="text-sm text-slate-300">{complexity}</span>
+            </label>
+          ))}
+        </FilterSection>
+
+        {/* Active Filters Summary */}
+        <div className="mt-6 pt-4 border-t border-slate-700">
+          <h3 className="text-sm font-medium text-slate-300 mb-3">Active Filters</h3>
+          <div className="flex flex-wrap gap-2">
+            {filters.category !== 'All' && (
+              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-brand-primary/20 text-brand-primary">
+                {filters.category}
+                <button
+                  onClick={() => handleCategoryChange('All')}
+                  className="ml-1 hover:text-brand-primary/70"
+                >
+                  ✕
+                </button>
+              </span>
+            )}
+            {filters.services?.map(service => (
+              <span key={service} className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-500/20 text-blue-400">
+                {service}
+                <button
+                  onClick={() => handleServiceChange(service)}
+                  className="ml-1 hover:text-blue-400/70"
+                >
+                  ✕
+                </button>
+              </span>
+            ))}
+            {filters.triggerType && (
+              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-500/20 text-green-400">
+                {filters.triggerType}
+                <button
+                  onClick={() => handleTriggerChange('')}
+                  className="ml-1 hover:text-green-400/70"
+                >
+                  ✕
+                </button>
+              </span>
+            )}
+            {filters.operation && (
+              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-purple-500/20 text-purple-400">
+                {filters.operation}
+                <button
+                  onClick={() => handleOperationChange('')}
+                  className="ml-1 hover:text-purple-400/70"
+                >
+                  ✕
+                </button>
+              </span>
+            )}
+            {filters.complexity && (
+              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-orange-500/20 text-orange-400">
+                {filters.complexity}
+                <button
+                  onClick={() => handleComplexityChange('')}
+                  className="ml-1 hover:text-orange-400/70"
+                >
+                  ✕
+                </button>
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
