@@ -8,18 +8,27 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
+        darkMode: 'class',
         theme: {
           extend: {
             colors: {
-              'brand-primary': '#1A827A',
-              'brand-secondary': '#FFC23D',
-              'slate': {
-                850: '#171f34'
-              }
+              'primary': '#ff9827',
+              'secondary': '#9c6ade', 
+              'accent': '#ff6d92',
+              'bg-dark': '#0e0918',
+              'text-dark': '#ffffff',
+              'sidebar-bg': '#110a20',
+              'bg-light': '#f5f5f7',
+              'text-light': '#333333',
+              'sidebar-light': '#f0f0f2'
             },
             fontFamily: {
               sans: ['Inter', 'sans-serif'],
             },
+            backgroundImage: {
+              'gradient-1': 'linear-gradient(135deg, #ff9827, #ff6d92)',
+              'gradient-2': 'linear-gradient(135deg, #9c6ade, #4f43e8)'
+            }
           },
         },
       }
@@ -28,33 +37,33 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-slate-900 text-slate-300">
-    <div class="min-h-screen bg-slate-850 font-sans">
+  <body class="bg-bg-light dark:bg-bg-dark text-text-light dark:text-text-dark">
+    <div class="min-h-screen bg-bg-light dark:bg-bg-dark font-sans">
       <div class="max-w-4xl mx-auto px-4 py-8">
         <div class="mb-8">
-          <a href="/" class="text-brand-primary hover:text-brand-secondary transition-colors">
+          <a href="/" class="text-primary hover:text-accent transition-colors">
             ← Back to Directory
           </a>
         </div>
         
-        <h1 class="text-3xl font-bold text-slate-100 mb-8">Terms of Service</h1>
+        <h1 class="text-3xl font-bold text-text-light dark:text-text-dark mb-8">Terms of Service</h1>
         
-        <div class="prose prose-slate prose-invert max-w-none">
-          <p class="text-sm text-slate-400 mb-6">
+        <div class="max-w-none">
+          <p class="text-sm text-gray-600 dark:text-slate-400 mb-6">
             <strong>Last updated:</strong> <span id="current-date"></span>
           </p>
 
-          <div class="bg-slate-800 border border-slate-700 rounded-lg p-6 mb-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-4">Important: Community Directory</h2>
-            <p class="text-slate-300">
+          <div class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-text-light dark:text-text-dark mb-4">Important: Community Directory</h2>
+            <p class="text-text-light dark:text-slate-300">
               This is a community-driven directory application for n8n workflows. By using this application, you acknowledge that 
               all workflows are sourced from public repositories under MIT license and agree to the terms outlined below.
             </p>
           </div>
 
           <section class="mb-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-4">1. Acceptance of Terms</h2>
-            <div class="text-slate-300 space-y-3">
+            <h2 class="text-xl font-semibold text-text-light dark:text-text-dark mb-4">1. Acceptance of Terms</h2>
+            <div class="text-text-light dark:text-slate-300 space-y-3">
               <p>
                 By accessing or using the n8n Workflow Directory ("Directory"), you agree to be bound by these Terms of Service. 
                 If you do not agree to these terms, please do not use this Directory.
@@ -63,8 +72,8 @@
           </section>
 
           <section class="mb-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-4">2. Directory Purpose</h2>
-            <div class="text-slate-300 space-y-3">
+            <h2 class="text-xl font-semibold text-text-light dark:text-text-dark mb-4">2. Directory Purpose</h2>
+            <div class="text-text-light dark:text-slate-300 space-y-3">
               <p>This application is provided for:</p>
               <ul class="list-disc list-inside space-y-2 ml-4">
                 <li>Discovering and browsing n8n workflows from the community</li>
@@ -72,16 +81,16 @@
                 <li>Community resource sharing</li>
                 <li>Workflow development inspiration</li>
               </ul>
-              <p class="font-semibold text-slate-200">
+              <p class="font-semibold text-text-light dark:text-text-dark">
                 This is a community directory and should be used responsibly for its intended purpose.
               </p>
             </div>
           </section>
 
           <section class="mb-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-4">3. Workflow Content Disclaimer</h2>
-            <div class="text-slate-300 space-y-3">
-              <p class="font-semibold text-slate-200">ALL WORKFLOWS ARE PROVIDED "AS IS" FROM PUBLIC REPOSITORIES.</p>
+            <h2 class="text-xl font-semibold text-text-light dark:text-text-dark mb-4">3. Workflow Content Disclaimer</h2>
+            <div class="text-text-light dark:text-slate-300 space-y-3">
+              <p class="font-semibold text-text-light dark:text-text-dark">ALL WORKFLOWS ARE PROVIDED "AS IS" FROM PUBLIC REPOSITORIES.</p>
               <ul class="list-disc list-inside space-y-2 ml-4">
                 <li>Workflows are sourced from public repositories under MIT license</li>
                 <li>Content is community-contributed and not verified by us</li>
@@ -93,9 +102,9 @@
           </section>
 
           <section class="mb-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-4">4. Limitation of Liability</h2>
-            <div class="text-slate-300 space-y-3">
-              <p class="font-semibold text-slate-200">TO THE MAXIMUM EXTENT PERMITTED BY LAW:</p>
+            <h2 class="text-xl font-semibold text-text-light dark:text-text-dark mb-4">4. Limitation of Liability</h2>
+            <div class="text-text-light dark:text-slate-300 space-y-3">
+              <p class="font-semibold text-text-light dark:text-text-dark">TO THE MAXIMUM EXTENT PERMITTED BY LAW:</p>
               <ul class="list-disc list-inside space-y-2 ml-4">
                 <li>This Directory is provided "AS IS" without warranties of any kind</li>
                 <li>Guy Chenya shall not be liable for any direct, indirect, incidental, or consequential damages</li>
@@ -108,8 +117,8 @@
           </section>
 
           <section class="mb-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-4">5. No Warranty</h2>
-            <div class="text-slate-300 space-y-3">
+            <h2 class="text-xl font-semibold text-text-light dark:text-text-dark mb-4">5. No Warranty</h2>
+            <div class="text-text-light dark:text-slate-300 space-y-3">
               <p>This Directory is provided without any express or implied warranties, including but not limited to:</p>
               <ul class="list-disc list-inside space-y-2 ml-4">
                 <li>Merchantability or fitness for a particular purpose</li>
@@ -122,8 +131,8 @@
           </section>
 
           <section class="mb-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-4">6. User Responsibilities</h2>
-            <div class="text-slate-300 space-y-3">
+            <h2 class="text-xl font-semibold text-text-light dark:text-text-dark mb-4">6. User Responsibilities</h2>
+            <div class="text-text-light dark:text-slate-300 space-y-3">
               <p>By using this Directory, you agree to:</p>
               <ul class="list-disc list-inside space-y-2 ml-4">
                 <li>Use the application responsibly and for its intended purpose</li>
@@ -137,8 +146,8 @@
           </section>
 
           <section class="mb-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-4">7. Third-Party Services and Content</h2>
-            <div class="text-slate-300 space-y-3">
+            <h2 class="text-xl font-semibold text-text-light dark:text-text-dark mb-4">7. Third-Party Services and Content</h2>
+            <div class="text-text-light dark:text-slate-300 space-y-3">
               <p>
                 This Directory integrates with third-party services (Netlify, GitHub) and displays content from public repositories. 
                 Your use of these services is subject to their respective terms of service and privacy policies. 
@@ -148,8 +157,8 @@
           </section>
 
           <section class="mb-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-4">8. Intellectual Property</h2>
-            <div class="text-slate-300 space-y-3">
+            <h2 class="text-xl font-semibold text-text-light dark:text-text-dark mb-4">8. Intellectual Property</h2>
+            <div class="text-text-light dark:text-slate-300 space-y-3">
               <p>
                 The Directory code and design are the intellectual property of Guy Chenya. All workflows are the intellectual 
                 property of their respective creators and are provided under MIT license. The Directory simply aggregates and 
@@ -159,8 +168,8 @@
           </section>
 
           <section class="mb-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-4">9. MIT License Compliance</h2>
-            <div class="text-slate-300 space-y-3">
+            <h2 class="text-xl font-semibold text-text-light dark:text-text-dark mb-4">9. MIT License Compliance</h2>
+            <div class="text-text-light dark:text-slate-300 space-y-3">
               <p>All workflows in this directory are sourced from public repositories under MIT license, which means:</p>
               <ul class="list-disc list-inside space-y-2 ml-4">
                 <li>You may use, modify, and distribute the workflows</li>
@@ -172,8 +181,8 @@
           </section>
 
           <section class="mb-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-4">10. Termination</h2>
-            <div class="text-slate-300 space-y-3">
+            <h2 class="text-xl font-semibold text-text-light dark:text-text-dark mb-4">10. Termination</h2>
+            <div class="text-text-light dark:text-slate-300 space-y-3">
               <p>
                 Access to this Directory may be terminated at any time without notice. These terms shall survive any 
                 termination of your access to the application.
@@ -182,8 +191,8 @@
           </section>
 
           <section class="mb-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-4">11. Governing Law</h2>
-            <div class="text-slate-300 space-y-3">
+            <h2 class="text-xl font-semibold text-text-light dark:text-text-dark mb-4">11. Governing Law</h2>
+            <div class="text-text-light dark:text-slate-300 space-y-3">
               <p>
                 These terms shall be governed by and construed in accordance with applicable law. Any disputes shall be 
                 resolved through binding arbitration or small claims court.
@@ -192,8 +201,8 @@
           </section>
 
           <section class="mb-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-4">12. Changes to Terms</h2>
-            <div class="text-slate-300 space-y-3">
+            <h2 class="text-xl font-semibold text-text-light dark:text-text-dark mb-4">12. Changes to Terms</h2>
+            <div class="text-text-light dark:text-slate-300 space-y-3">
               <p>
                 These terms may be updated at any time without notice. Your continued use of the Directory after any 
                 changes constitutes acceptance of the new terms.
@@ -202,18 +211,18 @@
           </section>
 
           <section class="mb-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-4">13. Contact Information</h2>
-            <div class="text-slate-300 space-y-3">
+            <h2 class="text-xl font-semibold text-text-light dark:text-text-dark mb-4">13. Contact Information</h2>
+            <div class="text-text-light dark:text-slate-300 space-y-3">
               <p>For questions about these terms or the Directory:</p>
               <ul class="list-disc list-inside space-y-2 ml-4">
-                <li>Visit: <a href="https://www.guyc.dev" class="text-brand-primary hover:text-brand-secondary">www.guyc.dev</a></li>
-                <li>GitHub: <a href="https://github.com/guychenya/n8n-workflow-directory" class="text-brand-primary hover:text-brand-secondary">n8n-workflow-directory</a></li>
+                <li>Visit: <a href="https://www.guyc.dev" class="text-primary hover:text-accent">www.guyc.dev</a></li>
+                <li>GitHub: <a href="https://github.com/guychenya/n8n-workflow-directory" class="text-primary hover:text-accent">n8n-workflow-directory</a></li>
               </ul>
             </div>
           </section>
 
-          <div class="bg-slate-800 border border-slate-700 rounded-lg p-6 mt-8">
-            <p class="text-slate-300 font-semibold">
+          <div class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg p-6 mt-8">
+            <p class="text-text-light dark:text-slate-300 font-semibold">
               <strong>Final Notice:</strong> By using this n8n Workflow Directory, you acknowledge that you have read, 
               understood, and agree to be bound by these Terms of Service.
             </p>

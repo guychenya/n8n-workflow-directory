@@ -8,18 +8,27 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
+        darkMode: 'class',
         theme: {
           extend: {
             colors: {
-              'brand-primary': '#1A827A',
-              'brand-secondary': '#FFC23D',
-              'slate': {
-                850: '#171f34'
-              }
+              'primary': '#ff9827',
+              'secondary': '#9c6ade', 
+              'accent': '#ff6d92',
+              'bg-dark': '#0e0918',
+              'text-dark': '#ffffff',
+              'sidebar-bg': '#110a20',
+              'bg-light': '#f5f5f7',
+              'text-light': '#333333',
+              'sidebar-light': '#f0f0f2'
             },
             fontFamily: {
               sans: ['Inter', 'sans-serif'],
             },
+            backgroundImage: {
+              'gradient-1': 'linear-gradient(135deg, #ff9827, #ff6d92)',
+              'gradient-2': 'linear-gradient(135deg, #9c6ade, #4f43e8)'
+            }
           },
         },
       }
@@ -28,33 +37,33 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-slate-900 text-slate-300">
-    <div class="min-h-screen bg-slate-850 font-sans">
+  <body class="bg-bg-light dark:bg-bg-dark text-text-light dark:text-text-dark">
+    <div class="min-h-screen bg-bg-light dark:bg-bg-dark font-sans">
       <div class="max-w-4xl mx-auto px-4 py-8">
         <div class="mb-8">
-          <a href="/" class="text-brand-primary hover:text-brand-secondary transition-colors">
+          <a href="/" class="text-primary hover:text-accent transition-colors">
             ← Back to Directory
           </a>
         </div>
         
-        <h1 class="text-3xl font-bold text-slate-100 mb-8">Privacy Policy</h1>
+        <h1 class="text-3xl font-bold text-text-light dark:text-text-dark mb-8">Privacy Policy</h1>
         
-        <div class="prose prose-slate prose-invert max-w-none">
-          <p class="text-sm text-slate-400 mb-6">
+        <div class="max-w-none">
+          <p class="text-sm text-gray-600 dark:text-slate-400 mb-6">
             <strong>Last updated:</strong> <span id="current-date"></span>
           </p>
 
-          <div class="bg-slate-800 border border-slate-700 rounded-lg p-6 mb-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-4">Directory Application Notice</h2>
-            <p class="text-slate-300">
+          <div class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-text-light dark:text-text-dark mb-4">Directory Application Notice</h2>
+            <p class="text-text-light dark:text-slate-300">
               This is a community-driven directory application for n8n workflows. All workflows are sourced from public repositories under MIT license. 
               This application is provided for educational and community purposes only.
             </p>
           </div>
 
           <section class="mb-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-4">1. Information We Collect</h2>
-            <div class="text-slate-300 space-y-3">
+            <h2 class="text-xl font-semibold text-text-light dark:text-text-dark mb-4">1. Information We Collect</h2>
+            <div class="text-text-light dark:text-slate-300 space-y-3">
               <p>This directory application may collect the following information:</p>
               <ul class="list-disc list-inside space-y-2 ml-4">
                 <li>Usage analytics for understanding workflow discovery patterns</li>
@@ -66,8 +75,8 @@
           </section>
 
           <section class="mb-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-4">2. How We Use Your Information</h2>
-            <div class="text-slate-300 space-y-3">
+            <h2 class="text-xl font-semibold text-text-light dark:text-text-dark mb-4">2. How We Use Your Information</h2>
+            <div class="text-text-light dark:text-slate-300 space-y-3">
               <p>Information collected is used solely for:</p>
               <ul class="list-disc list-inside space-y-2 ml-4">
                 <li>Improving the workflow discovery experience</li>
@@ -79,8 +88,8 @@
           </section>
 
           <section class="mb-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-4">3. Data Storage and Security</h2>
-            <div class="text-slate-300 space-y-3">
+            <h2 class="text-xl font-semibold text-text-light dark:text-text-dark mb-4">3. Data Storage and Security</h2>
+            <div class="text-text-light dark:text-slate-300 space-y-3">
               <p>Your data is handled securely:</p>
               <ul class="list-disc list-inside space-y-2 ml-4">
                 <li>No personal information is stored on our servers</li>
@@ -92,8 +101,8 @@
           </section>
 
           <section class="mb-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-4">4. Third-Party Services</h2>
-            <div class="text-slate-300 space-y-3">
+            <h2 class="text-xl font-semibold text-text-light dark:text-text-dark mb-4">4. Third-Party Services</h2>
+            <div class="text-text-light dark:text-slate-300 space-y-3">
               <p>This directory application integrates with:</p>
               <ul class="list-disc list-inside space-y-2 ml-4">
                 <li>Netlify for hosting and deployment</li>
@@ -105,8 +114,8 @@
           </section>
 
           <section class="mb-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-4">5. Workflow Content Disclaimer</h2>
-            <div class="text-slate-300 space-y-3">
+            <h2 class="text-xl font-semibold text-text-light dark:text-text-dark mb-4">5. Workflow Content Disclaimer</h2>
+            <div class="text-text-light dark:text-slate-300 space-y-3">
               <p>All workflows in this directory are:</p>
               <ul class="list-disc list-inside space-y-2 ml-4">
                 <li>Sourced from public repositories under MIT license</li>
@@ -119,8 +128,8 @@
           </section>
 
           <section class="mb-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-4">6. Your Rights</h2>
-            <div class="text-slate-300 space-y-3">
+            <h2 class="text-xl font-semibold text-text-light dark:text-text-dark mb-4">6. Your Rights</h2>
+            <div class="text-text-light dark:text-slate-300 space-y-3">
               <p>As a user, you have the right to:</p>
               <ul class="list-disc list-inside space-y-2 ml-4">
                 <li>Access information about data collection</li>
@@ -132,19 +141,19 @@
           </section>
 
           <section class="mb-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-4">7. Contact Information</h2>
-            <div class="text-slate-300 space-y-3">
+            <h2 class="text-xl font-semibold text-text-light dark:text-text-dark mb-4">7. Contact Information</h2>
+            <div class="text-text-light dark:text-slate-300 space-y-3">
               <p>For questions about this privacy policy or the directory application:</p>
               <ul class="list-disc list-inside space-y-2 ml-4">
-                <li>Visit: <a href="https://www.guyc.dev" class="text-brand-primary hover:text-brand-secondary">www.guyc.dev</a></li>
-                <li>GitHub: <a href="https://github.com/guychenya/n8n-workflow-directory" class="text-brand-primary hover:text-brand-secondary">n8n-workflow-directory</a></li>
+                <li>Visit: <a href="https://www.guyc.dev" class="text-primary hover:text-accent">www.guyc.dev</a></li>
+                <li>GitHub: <a href="https://github.com/guychenya/n8n-workflow-directory" class="text-primary hover:text-accent">n8n-workflow-directory</a></li>
               </ul>
             </div>
           </section>
 
           <section class="mb-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-4">8. Changes to This Policy</h2>
-            <div class="text-slate-300 space-y-3">
+            <h2 class="text-xl font-semibold text-text-light dark:text-text-dark mb-4">8. Changes to This Policy</h2>
+            <div class="text-text-light dark:text-slate-300 space-y-3">
               <p>
                 This privacy policy may be updated to reflect changes in the directory application or legal requirements. 
                 Any changes will be posted on this page with an updated date.
