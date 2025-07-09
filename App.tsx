@@ -15,6 +15,7 @@ function App() {
     searchTerm: ''
   });
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [displayedCount, setDisplayedCount] = useState(24); // Initial load: 24 workflows
 
   // Debug: Log workflow count (only in development)
@@ -139,6 +140,7 @@ function App() {
   }, [filters]);
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+  const toggleSidebarCollapsed = () => setSidebarCollapsed(!sidebarCollapsed);
 
   return (
     <div className="min-h-screen bg-bg-light dark:bg-bg-dark font-sans">
@@ -153,12 +155,42 @@ function App() {
           operations={filterOptions.operations}
           isOpen={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
+          isCollapsed={sidebarCollapsed}
         />
 
         {/* Main Content */}
         <div className="flex-1 lg:ml-0">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
             <Header />
+            
+            {/* Desktop filter toggle */}
+            <div className="hidden lg:block mb-6">
+              <button
+                onClick={toggleSidebarCollapsed}
+                className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 text-text-light dark:text-text-dark rounded-md border border-gray-300 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors shadow-sm"
+                aria-label={sidebarCollapsed ? 'Expand filters' : 'Collapse filters'}
+              >
+                <svg 
+                  className={`w-5 h-5 transition-transform duration-200 ${sidebarCollapsed ? 'rotate-180' : ''}`} 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                </svg>
+                {sidebarCollapsed ? 'Show Filters' : 'Hide Filters'}
+                {(filters.category !== 'All' || 
+                  filters.services.length > 0 || 
+                  filters.triggerType || 
+                  filters.operation || 
+                  filters.complexity ||
+                  filters.searchTerm) && (
+                  <span className="bg-primary text-white text-xs px-2 py-0.5 rounded-full">
+                    {sidebarCollapsed ? '!' : 'Active'}
+                  </span>
+                )}
+              </button>
+            </div>
             
             {/* Mobile filter toggle */}
             <div className="lg:hidden mb-6">
@@ -176,7 +208,7 @@ function App() {
                   filters.operation || 
                   filters.complexity ||
                   filters.searchTerm) && (
-                  <span className="bg-brand-primary text-white text-xs px-2 py-0.5 rounded-full">
+                  <span className="bg-primary text-white text-xs px-2 py-0.5 rounded-full">
                     Active
                   </span>
                 )}
@@ -275,7 +307,7 @@ function App() {
                         complexity: '',
                         searchTerm: ''
                       })}
-                      className="mt-4 px-4 py-2 bg-brand-primary text-white rounded-md hover:bg-brand-primary/90 transition-colors"
+                      className="mt-4 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
                     >
                       Clear all filters
                     </button>

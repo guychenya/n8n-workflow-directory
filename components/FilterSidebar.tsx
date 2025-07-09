@@ -10,6 +10,7 @@ interface FilterSidebarProps {
   operations: string[];
   isOpen: boolean;
   onClose: () => void;
+  isCollapsed?: boolean;
 }
 
 export const FilterSidebar: React.FC<FilterSidebarProps> = ({
@@ -20,7 +21,8 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   triggerTypes,
   operations,
   isOpen,
-  onClose
+  onClose,
+  isCollapsed = false
 }) => {
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
     new Set(['categories', 'services', 'triggers'])
@@ -123,11 +125,13 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       
       {/* Sidebar */}
       <div className={`
-        fixed lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out
+        fixed lg:relative lg:translate-x-0 transition-all duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+        ${isCollapsed ? 'lg:w-0 lg:overflow-hidden' : 'lg:w-80'}
         top-0 left-0 h-full lg:h-auto bg-sidebar-light dark:bg-sidebar-bg border-r border-gray-200 dark:border-slate-700 
         w-80 p-6 overflow-y-auto z-50
       `}>
+        <div className={`${isCollapsed ? 'lg:hidden' : ''}`}>
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-bold text-text-light dark:text-text-dark">Filters</h2>
           <div className="flex items-center gap-2">
@@ -322,6 +326,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
               </span>
             )}
           </div>
+        </div>
         </div>
       </div>
     </>
