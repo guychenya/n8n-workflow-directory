@@ -1,14 +1,27 @@
-# Run and deploy your AI Studio app
+App Name
+Overview
+This application provides an enhanced user interface and experience for workflow visualization and management. The project builds upon open-source foundations while introducing new features for improved usability and functionality.
 
-This contains everything you need to run your app locally.
+Features
+* Interactive Workflow Visualization: Break down and examine each workflow node in detail
+* JSON Code Inspection: View and analyze the underlying JSON structure for each component
+* User-Friendly Interface: Streamlined design for improved accessibility and navigation
+* Enhanced Documentation: Structured presentation of workflow data
 
-## Run Locally
+Attribution
+This project incorporates workflows from open-source repositories. Special credit and recognition goes to the original repository owner: Manthan (LinkedIn Profile.
 
-**Prerequisites:**  Node.js
+Development
+The user interface, user experience design, and core application logic were developed using Claude CLI. Key enhancements include:
 
+* Visualization Concepts: New approaches to displaying workflow data
+* Node Breakdown Functionality: Detailed examination capabilities for individual workflow components
+* JSON Code Snippet Integration: Seamless access to underlying code structures
+* Improved User Experience: Restructured interface for enhanced usability
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Technical Implementation
+The application leverages modern development practices and tools to deliver a responsive and intuitive user experience while maintaining the integrity of the original open-source workflows.
+
+----
+
+Built with appreciation for the open-source community and the foundational work of contributors who make projects like this possible.
