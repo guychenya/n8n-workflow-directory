@@ -210,7 +210,7 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
       />
       
       {/* Modal */}
-      <div className="relative bg-white dark:bg-slate-800 rounded-xl shadow-2xl max-w-3xl w-full mx-4 max-h-[70vh] overflow-hidden
+      <div className="relative bg-white dark:bg-slate-800 rounded-xl shadow-2xl max-w-2xl w-full mx-4 max-h-[60vh] overflow-hidden
       backdrop-blur-lg bg-opacity-95 dark:bg-opacity-95
       shadow-2xl shadow-black/30
       before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/20 before:via-white/5 before:to-transparent before:pointer-events-none before:rounded-xl
@@ -269,7 +269,7 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
         </div>
 
         {/* Content */}
-        <div className="p-4 overflow-y-auto max-h-[calc(70vh-180px)]">
+        <div className="p-3 overflow-y-auto max-h-[calc(60vh-140px)]">
           {loading && (
             <div className="flex items-center justify-center py-12">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -443,21 +443,21 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between p-3 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-700/50 min-h-[60px]">
-          <div className="text-xs text-gray-600 dark:text-slate-400">
-            File: {workflow.fileName}
+        <div className="flex items-center justify-between p-2 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-700/50 min-h-[50px] flex-shrink-0">
+          <div className="text-xs text-gray-600 dark:text-slate-400 truncate">
+            {workflow.fileName}
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-1.5 flex-shrink-0">
             <a
               href={`/workflows/${workflow.fileName}`}
               download={workflow.fileName}
-              className="px-3 py-1.5 bg-gray-200 dark:bg-slate-600 text-gray-700 dark:text-slate-200 rounded-md hover:bg-gray-300 dark:hover:bg-slate-500 transition-colors font-medium flex items-center gap-1.5 text-xs"
+              className="px-2 py-1 bg-gray-200 dark:bg-slate-600 text-gray-700 dark:text-slate-200 rounded hover:bg-gray-300 dark:hover:bg-slate-500 transition-colors font-medium flex items-center gap-1 text-xs whitespace-nowrap"
             >
-              📥 Download JSON
+              📥 Download
             </a>
             <button
               onClick={onClose}
-              className="px-3 py-1.5 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors font-medium text-xs"
+              className="px-2 py-1 bg-primary text-white rounded hover:bg-primary/90 transition-colors font-medium text-xs whitespace-nowrap"
             >
               Close
             </button>
