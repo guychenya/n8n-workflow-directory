@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import type { Workflow } from '../types';
+import { WorkflowVisualizer } from './WorkflowVisualizer';
 
 interface WorkflowModalProps {
   workflow: Workflow | null;
@@ -139,7 +140,7 @@ export const WorkflowModal: React.FC<WorkflowModalProps> = ({ workflow, isOpen, 
       />
       
       {/* Modal */}
-      <div className="relative bg-white dark:bg-slate-800 rounded-xl shadow-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-hidden">
+      <div className="relative bg-white dark:bg-slate-800 rounded-xl shadow-2xl max-w-6xl w-full mx-4 max-h-[95vh] overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-slate-700">
           <div className="flex-1">
@@ -170,7 +171,7 @@ export const WorkflowModal: React.FC<WorkflowModalProps> = ({ workflow, isOpen, 
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+        <div className="p-6 overflow-y-auto max-h-[calc(95vh-140px)]">
           {loading && (
             <div className="flex items-center justify-center py-12">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -187,6 +188,12 @@ export const WorkflowModal: React.FC<WorkflowModalProps> = ({ workflow, isOpen, 
 
           {workflowData && (
             <div className="space-y-6">
+              {/* Workflow Visualizer */}
+              <div>
+                <h3 className="text-lg font-semibold text-text-light dark:text-text-dark mb-3">Workflow Diagram</h3>
+                <WorkflowVisualizer workflow={workflowData} />
+              </div>
+
               {/* Description */}
               <div>
                 <h3 className="text-lg font-semibold text-text-light dark:text-text-dark mb-3">Description</h3>
