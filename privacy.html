@@ -15,9 +15,9 @@
               'primary': '#ff9827',
               'secondary': '#9c6ade', 
               'accent': '#ff6d92',
-              'bg-dark': '#0e0918',
+              'bg-dark': '#2d1b4e',
               'text-dark': '#ffffff',
-              'sidebar-bg': '#110a20',
+              'sidebar-bg': '#4a3c5f',
               'bg-light': '#f5f5f7',
               'text-light': '#333333',
               'sidebar-light': '#f0f0f2'
@@ -27,7 +27,8 @@
             },
             backgroundImage: {
               'gradient-1': 'linear-gradient(135deg, #ff9827, #ff6d92)',
-              'gradient-2': 'linear-gradient(135deg, #9c6ade, #4f43e8)'
+              'gradient-2': 'linear-gradient(135deg, #2d1b4e, #4a3c5f)',
+              'gradient-3': 'linear-gradient(135deg, #4a3c5f, #6b5b73)'
             }
           },
         },
@@ -168,22 +169,22 @@
       // Set current date
       document.getElementById('current-date').textContent = new Date().toLocaleDateString();
       
-      // Dark theme detection and application
+      // Dark theme detection and application - matching main dashboard logic
       function applyTheme() {
-        const isDark = localStorage.getItem('theme') === 'dark' || 
-                      (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         
-        if (isDark) {
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
           document.documentElement.classList.add('dark');
         } else {
           document.documentElement.classList.remove('dark');
         }
       }
       
-      // Apply theme immediately
+      // Apply theme immediately on page load
       applyTheme();
       
-      // Listen for theme changes
+      // Listen for theme changes in localStorage (from main dashboard)
       window.addEventListener('storage', function(e) {
         if (e.key === 'theme') {
           applyTheme();
@@ -195,6 +196,11 @@
         if (!localStorage.getItem('theme')) {
           applyTheme();
         }
+      });
+      
+      // Also check on focus (when returning to tab)
+      window.addEventListener('focus', function() {
+        applyTheme();
       });
     </script>
   </body>
