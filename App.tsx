@@ -15,6 +15,13 @@ function App() {
     searchTerm: ''
   });
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [displayedCount, setDisplayedCount] = useState(24); // Initial load: 24 workflows
+
+  // Debug: Log workflow count
+  console.log('Total workflows loaded:', allWorkflows.length);
+  if (allWorkflows.length > 0) {
+    console.log('First workflow:', allWorkflows[0]);
+  }
 
   // Generate filter options from workflow data
   const filterOptions = useMemo(() => {
@@ -53,7 +60,7 @@ function App() {
   }, []);
 
   // Filter workflows based on current filters
-  const filteredWorkflows = useMemo(() => {
+  const allFilteredWorkflows = useMemo(() => {
     return allWorkflows.filter(workflow => {
       // Category filter
       if (filters.category !== 'All' && workflow.category !== filters.category) {
@@ -102,6 +109,29 @@ function App() {
 
       return true;
     });
+  }, [filters]);
+
+  // Apply pagination to filtered workflows
+  const displayedWorkflows = useMemo(() => {
+    return allFilteredWorkflows.slice(0, displayedCount);
+  }, [allFilteredWorkflows, displayedCount]);
+
+  // Reset displayed count when filters change
+  const resetDisplayedCount = () => {
+    setDisplayedCount(24);
+  };
+
+  // Load more workflows
+  const loadMoreWorkflows = () => {
+    setDisplayedCount(prev => prev + 24);
+  };
+
+  // Check if there are more workflows to load
+  const hasMoreWorkflows = displayedCount < allFilteredWorkflows.length;
+
+  // Reset displayed count when filters change
+  React.useEffect(() => {
+    resetDisplayedCount();
   }, [filters]);
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
@@ -155,11 +185,16 @@ function App() {
                 <div className="flex items-center justify-between">
                   <div className="text-slate-300">
                     <span className="text-lg font-semibold text-slate-100">
-                      {filteredWorkflows.length}
+                      {displayedWorkflows.length}
                     </span>
                     <span className="ml-2">
-                      {filteredWorkflows.length === 1 ? 'workflow' : 'workflows'}
+                      {displayedWorkflows.length === 1 ? 'workflow' : 'workflows'}
                     </span>
+                    {allFilteredWorkflows.length > displayedWorkflows.length && (
+                      <span className="ml-2 text-slate-400">
+                        of {allFilteredWorkflows.length} total
+                      </span>
+                    )}
                     {filters.category !== 'All' && (
                       <span className="ml-2 text-slate-400">
                         in {filters.category}
@@ -212,7 +247,7 @@ function App() {
                 </div>
 
                 {/* No results message */}
-                {filteredWorkflows.length === 0 && (
+                {allFilteredWorkflows.length === 0 && (
                   <div className="text-center py-12">
                     <div className="text-slate-400 text-lg mb-2">No workflows found</div>
                     <div className="text-slate-500 text-sm">
@@ -235,7 +270,22 @@ function App() {
                 )}
               </div>
 
-              <WorkflowGrid workflows={filteredWorkflows} />
+              <WorkflowGrid workflows={displayedWorkflows} />
+              
+              {/* Load More Button */}
+              {hasMoreWorkflows && (
+                <div className="text-center mt-8 mb-8">
+                  <button
+                    onClick={loadMoreWorkflows}
+                    className="px-6 py-3 bg-brand-primary text-white rounded-md hover:bg-brand-primary/90 transition-colors font-medium"
+                  >
+                    Load More Workflows
+                    <span className="ml-2 text-sm opacity-75">
+                      ({allFilteredWorkflows.length - displayedWorkflows.length} remaining)
+                    </span>
+                  </button>
+                </div>
+              )}
             </main>
             
             <footer className="text-center mt-12 text-slate-500 text-sm space-y-4">
