@@ -9,18 +9,27 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
+        darkMode: 'class',
         theme: {
           extend: {
             colors: {
-              'brand-primary': '#1A827A',
-              'brand-secondary': '#FFC23D',
-              'slate': {
-                850: '#171f34'
-              }
+              'primary': '#ff9827',
+              'secondary': '#9c6ade', 
+              'accent': '#ff6d92',
+              'bg-dark': '#0e0918',
+              'text-dark': '#ffffff',
+              'sidebar-bg': '#110a20',
+              'bg-light': '#f5f5f7',
+              'text-light': '#333333',
+              'sidebar-light': '#f0f0f2'
             },
             fontFamily: {
               sans: ['Inter', 'sans-serif'],
             },
+            backgroundImage: {
+              'gradient-1': 'linear-gradient(135deg, #ff9827, #ff6d92)',
+              'gradient-2': 'linear-gradient(135deg, #9c6ade, #4f43e8)'
+            }
           },
         },
       }
@@ -39,7 +48,7 @@
 </script>
 <link rel="stylesheet" href="/index.css">
 </head>
-  <body class="bg-slate-900 text-slate-300">
+  <body class="bg-bg-light dark:bg-bg-dark text-text-light dark:text-text-dark">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>

@@ -41,9 +41,9 @@ export const WorkflowCard: React.FC<WorkflowCardProps> = ({ workflow }) => {
   const triggerIcon = triggerIcons[triggerType] || '🔧';
 
   return (
-    <div className="bg-slate-800 rounded-lg shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-2xl border border-slate-700/50 hover:border-brand-primary/30">
+    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-2xl border border-gray-200 dark:border-slate-700/50 hover:border-primary/30">
       {/* Header with category and complexity */}
-      <div className="p-4 border-b border-slate-700/50">
+      <div className="p-4 border-b border-gray-200 dark:border-slate-700/50">
         <div className="flex items-center justify-between mb-2">
           <span className={`inline-block text-xs font-semibold px-2.5 py-1 rounded-full border ${categoryColor}`}>
             {category}
@@ -54,19 +54,19 @@ export const WorkflowCard: React.FC<WorkflowCardProps> = ({ workflow }) => {
         </div>
         
         {/* Trigger type and operation */}
-        <div className="flex items-center gap-2 text-xs text-slate-400">
+        <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-slate-400">
           <span className="flex items-center gap-1">
             {triggerIcon} {triggerType}
           </span>
-          <span className="text-slate-600">•</span>
+          <span className="text-gray-400 dark:text-slate-600">•</span>
           <span>{operation}</span>
         </div>
       </div>
 
       {/* Main content */}
       <div className="p-4 flex-grow">
-        <h3 className="text-lg font-bold text-slate-100 mb-2 line-clamp-2">{title}</h3>
-        <p className="text-slate-400 text-sm leading-relaxed mb-4 line-clamp-3">
+        <h3 className="text-lg font-bold text-text-light dark:text-slate-100 mb-2 line-clamp-2">{title}</h3>
+        <p className="text-gray-500 dark:text-slate-400 text-sm leading-relaxed mb-4 line-clamp-3">
           {description}
         </p>
         
@@ -74,12 +74,12 @@ export const WorkflowCard: React.FC<WorkflowCardProps> = ({ workflow }) => {
         <div className="mb-4">
           <div className="flex flex-wrap gap-1 mb-2">
             {services.slice(0, 3).map(service => (
-              <span key={service} className="inline-block bg-slate-700/50 text-slate-300 text-xs px-2 py-1 rounded border border-slate-600/50">
+              <span key={service} className="inline-block bg-gray-100 dark:bg-slate-700/50 text-gray-700 dark:text-slate-300 text-xs px-2 py-1 rounded border border-gray-200 dark:border-slate-600/50">
                 {service}
               </span>
             ))}
             {services.length > 3 && (
-              <span className="inline-block bg-slate-700/50 text-slate-400 text-xs px-2 py-1 rounded border border-slate-600/50">
+              <span className="inline-block bg-gray-100 dark:bg-slate-700/50 text-gray-500 dark:text-slate-400 text-xs px-2 py-1 rounded border border-gray-200 dark:border-slate-600/50">
                 +{services.length - 3} more
               </span>
             )}
@@ -89,12 +89,12 @@ export const WorkflowCard: React.FC<WorkflowCardProps> = ({ workflow }) => {
         {/* Tags */}
         <div className="flex flex-wrap gap-1 mb-4">
           {tags.slice(0, 4).map(tag => (
-            <span key={tag} className="inline-block bg-slate-700/30 text-slate-400 text-xs px-2 py-1 rounded">
+            <span key={tag} className="inline-block bg-gray-100 dark:bg-slate-700/30 text-gray-600 dark:text-slate-400 text-xs px-2 py-1 rounded">
               #{tag}
             </span>
           ))}
           {tags.length > 4 && (
-            <span className="inline-block bg-slate-700/30 text-slate-400 text-xs px-2 py-1 rounded">
+            <span className="inline-block bg-gray-100 dark:bg-slate-700/30 text-gray-600 dark:text-slate-400 text-xs px-2 py-1 rounded">
               +{tags.length - 4}
             </span>
           )}
@@ -102,11 +102,11 @@ export const WorkflowCard: React.FC<WorkflowCardProps> = ({ workflow }) => {
       </div>
 
       {/* Footer with download button */}
-      <div className="bg-slate-800/50 p-4 mt-auto border-t border-slate-700/50">
+      <div className="bg-gray-50 dark:bg-slate-800/50 p-4 mt-auto border-t border-gray-200 dark:border-slate-700/50">
         <a
           href={downloadUrl}
           download={fileName}
-          className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-brand-primary to-brand-primary/80 text-white font-semibold py-3 px-4 rounded-md hover:from-brand-primary/90 hover:to-brand-primary/70 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-brand-primary shadow-lg hover:shadow-xl"
+          className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary/80 text-white font-semibold py-3 px-4 rounded-md hover:from-primary/90 hover:to-primary/70 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 dark:focus:ring-offset-slate-800 focus:ring-primary shadow-lg hover:shadow-xl"
         >
           <DownloadIcon className="w-5 h-5" />
           <span>Download Workflow</span>
