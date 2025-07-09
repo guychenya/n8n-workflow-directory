@@ -315,6 +315,9 @@ function App() {
                   <br className="sm:hidden" /> 
                   Workflows are provided "as is" without warranty.
                 </p>
+                <p className="text-primary font-medium">
+                  Made with ❤️ by <a href="https://www.guyc.dev" className="hover:text-accent transition-colors underline">Guy Chenya</a>
+                </p>
               </div>
             </footer>
           </div>
