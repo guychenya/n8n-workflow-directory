@@ -187,20 +187,20 @@ function App() {
               {/* Results summary */}
               <div className="mb-6">
                 <div className="flex items-center justify-between">
-                  <div className="text-slate-300">
-                    <span className="text-lg font-semibold text-slate-100">
+                  <div className="bg-white/5 dark:bg-slate-800/50 px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-700">
+                    <span className="text-xl font-bold text-primary">
                       {displayedWorkflows.length}
                     </span>
-                    <span className="ml-2">
+                    <span className="ml-2 text-text-light dark:text-text-dark font-medium">
                       {displayedWorkflows.length === 1 ? 'workflow' : 'workflows'}
                     </span>
                     {allFilteredWorkflows.length > displayedWorkflows.length && (
-                      <span className="ml-2 text-slate-400">
+                      <span className="ml-2 text-secondary font-semibold">
                         of {allFilteredWorkflows.length} total
                       </span>
                     )}
                     {filters.category !== 'All' && (
-                      <span className="ml-2 text-slate-400">
+                      <span className="ml-2 text-accent font-medium">
                         in {filters.category}
                       </span>
                     )}
@@ -213,10 +213,10 @@ function App() {
                       filters.triggerType || 
                       filters.operation || 
                       filters.complexity) && (
-                      <div className="flex items-center gap-2 text-sm text-slate-400">
+                      <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-slate-400">
                         <span>Filtered by:</span>
                         {filters.category !== 'All' && (
-                          <span className="bg-brand-primary/20 text-brand-primary px-2 py-1 rounded text-xs">
+                          <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">
                             {filters.category}
                           </span>
                         )}
@@ -290,11 +290,11 @@ function App() {
                 <div className="text-center mt-8 mb-8">
                   <button
                     onClick={loadMoreWorkflows}
-                    className="px-6 py-3 bg-brand-primary text-white rounded-md hover:bg-brand-primary/90 transition-colors font-medium"
+                    className="px-8 py-4 bg-gradient-to-r from-primary to-accent text-white rounded-lg hover:from-primary/90 hover:to-accent/90 transition-all duration-200 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-105"
                   >
                     Load More Workflows
-                    <span className="ml-2 text-sm opacity-75">
-                      ({allFilteredWorkflows.length - displayedWorkflows.length} remaining)
+                    <span className="ml-3 text-base bg-white/20 px-3 py-1 rounded-full">
+                      {allFilteredWorkflows.length - displayedWorkflows.length} remaining
                     </span>
                   </button>
                 </div>
@@ -303,10 +303,10 @@ function App() {
             
             <footer className="text-center mt-12 text-slate-500 text-sm space-y-4">
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
-                <a href="/privacy" className="hover:text-brand-primary transition-colors">Privacy Policy</a>
-                <a href="/terms" className="hover:text-brand-primary transition-colors">Terms of Service</a>
-                <a href="https://github.com/guychenya/n8n-workflow-directory" className="hover:text-brand-primary transition-colors">GitHub</a>
-                <a href="https://www.guyc.dev" className="hover:text-brand-primary transition-colors">Contact</a>
+                <a href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</a>
+                <a href="/terms" className="hover:text-primary transition-colors">Terms of Service</a>
+                <a href="https://github.com/guychenya/n8n-workflow-directory" className="hover:text-primary transition-colors">GitHub</a>
+                <a href="https://www.guyc.dev" className="hover:text-primary transition-colors">Contact</a>
               </div>
               <div className="space-y-2">
                 <p>Built for the n8n community. Not affiliated with n8n GmbH.</p>

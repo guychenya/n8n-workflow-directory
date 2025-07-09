@@ -125,21 +125,21 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       <div className={`
         fixed lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
-        top-0 left-0 h-full lg:h-auto bg-slate-800 border-r border-slate-700 
+        top-0 left-0 h-full lg:h-auto bg-sidebar-light dark:bg-sidebar-bg border-r border-gray-200 dark:border-slate-700 
         w-80 p-6 overflow-y-auto z-50
       `}>
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-bold text-slate-100">Filters</h2>
+          <h2 className="text-lg font-bold text-text-light dark:text-text-dark">Filters</h2>
           <div className="flex items-center gap-2">
             <button
               onClick={clearAllFilters}
-              className="text-sm text-slate-400 hover:text-slate-200 transition-colors"
+              className="text-sm text-gray-500 dark:text-slate-400 hover:text-text-light dark:hover:text-slate-200 transition-colors"
             >
               Clear all
             </button>
             <button
               onClick={onClose}
-              className="lg:hidden text-slate-400 hover:text-slate-200 transition-colors"
+              className="lg:hidden text-gray-500 dark:text-slate-400 hover:text-text-light dark:hover:text-slate-200 transition-colors"
             >
               ✕
             </button>
@@ -167,13 +167,13 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
           onToggle={() => toggleSection('categories')}
         >
           {serviceCategories.map(({ name, count }) => (
-            <label key={name} className="flex items-center cursor-pointer hover:bg-slate-700 p-2 rounded">
+            <label key={name} className="flex items-center cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700 p-2 rounded">
               <input
                 type="radio"
                 name="category"
                 checked={filters.category === name}
                 onChange={() => handleCategoryChange(name)}
-                className="mr-3 text-brand-primary focus:ring-brand-primary"
+                className="mr-3 text-primary focus:ring-primary"
               />
               <span className="text-sm text-slate-300 flex-1">{name}</span>
               <span className="text-xs text-slate-500">({count})</span>
@@ -189,14 +189,14 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
         >
           <div className="max-h-64 overflow-y-auto">
             {allServices.slice(0, 20).map(service => (
-              <label key={service} className="flex items-center cursor-pointer hover:bg-slate-700 p-2 rounded">
+              <label key={service} className="flex items-center cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700 p-2 rounded">
                 <input
                   type="checkbox"
                   checked={filters.services?.includes(service) || false}
                   onChange={() => handleServiceChange(service)}
-                  className="mr-3 text-brand-primary focus:ring-brand-primary"
+                  className="mr-3 text-primary focus:ring-primary"
                 />
-                <span className="text-sm text-slate-300">{service}</span>
+                <span className="text-sm text-text-light dark:text-slate-300">{service}</span>
               </label>
             ))}
           </div>
@@ -209,15 +209,15 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
           onToggle={() => toggleSection('triggers')}
         >
           {triggerTypes.map(trigger => (
-            <label key={trigger} className="flex items-center cursor-pointer hover:bg-slate-700 p-2 rounded">
+            <label key={trigger} className="flex items-center cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700 p-2 rounded">
               <input
                 type="radio"
                 name="triggerType"
                 checked={filters.triggerType === trigger}
                 onChange={() => handleTriggerChange(trigger)}
-                className="mr-3 text-brand-primary focus:ring-brand-primary"
+                className="mr-3 text-primary focus:ring-primary"
               />
-              <span className="text-sm text-slate-300">{trigger}</span>
+              <span className="text-sm text-text-light dark:text-slate-300">{trigger}</span>
             </label>
           ))}
         </FilterSection>
@@ -229,15 +229,15 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
           onToggle={() => toggleSection('operations')}
         >
           {operations.map(operation => (
-            <label key={operation} className="flex items-center cursor-pointer hover:bg-slate-700 p-2 rounded">
+            <label key={operation} className="flex items-center cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700 p-2 rounded">
               <input
                 type="radio"
                 name="operation"
                 checked={filters.operation === operation}
                 onChange={() => handleOperationChange(operation)}
-                className="mr-3 text-brand-primary focus:ring-brand-primary"
+                className="mr-3 text-primary focus:ring-primary"
               />
-              <span className="text-sm text-slate-300">{operation}</span>
+              <span className="text-sm text-text-light dark:text-slate-300">{operation}</span>
             </label>
           ))}
         </FilterSection>
@@ -249,15 +249,15 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
           onToggle={() => toggleSection('complexity')}
         >
           {['Simple', 'Advanced', 'Multi-step'].map(complexity => (
-            <label key={complexity} className="flex items-center cursor-pointer hover:bg-slate-700 p-2 rounded">
+            <label key={complexity} className="flex items-center cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700 p-2 rounded">
               <input
                 type="radio"
                 name="complexity"
                 checked={filters.complexity === complexity}
                 onChange={() => handleComplexityChange(complexity)}
-                className="mr-3 text-brand-primary focus:ring-brand-primary"
+                className="mr-3 text-primary focus:ring-primary"
               />
-              <span className="text-sm text-slate-300">{complexity}</span>
+              <span className="text-sm text-text-light dark:text-slate-300">{complexity}</span>
             </label>
           ))}
         </FilterSection>
