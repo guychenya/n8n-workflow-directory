@@ -210,7 +210,11 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
       />
       
       {/* Modal */}
-      <div className="relative bg-white dark:bg-slate-800 rounded-xl shadow-2xl max-w-5xl w-full mx-4 max-h-[85vh] overflow-hidden">
+      <div className="relative bg-white dark:bg-slate-800 rounded-xl shadow-2xl max-w-4xl w-full mx-4 max-h-[75vh] overflow-hidden
+      backdrop-blur-lg bg-opacity-95 dark:bg-opacity-95
+      shadow-2xl shadow-black/30
+      before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/20 before:via-white/5 before:to-transparent before:pointer-events-none before:rounded-xl
+      border border-white/20 dark:border-slate-600/30">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-slate-700 bg-gradient-to-r from-primary/5 to-secondary/5 dark:from-slate-700 dark:to-slate-700">
           <div className="flex-1">
@@ -265,7 +269,7 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(85vh-220px)]">
+        <div className="p-6 overflow-y-auto max-h-[calc(75vh-200px)]">
           {loading && (
             <div className="flex items-center justify-center py-12">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -439,7 +443,7 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between p-6 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-700/50 min-h-[90px]">
+        <div className="flex items-center justify-between p-4 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-700/50 min-h-[80px]">
           <div className="text-sm text-gray-600 dark:text-slate-400">
             File: {workflow.fileName}
           </div>
@@ -447,13 +451,13 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
             <a
               href={`/workflows/${workflow.fileName}`}
               download={workflow.fileName}
-              className="px-6 py-3 bg-gray-200 dark:bg-slate-600 text-gray-700 dark:text-slate-200 rounded-lg hover:bg-gray-300 dark:hover:bg-slate-500 transition-colors font-medium flex items-center gap-2"
+              className="px-4 py-2 bg-gray-200 dark:bg-slate-600 text-gray-700 dark:text-slate-200 rounded-lg hover:bg-gray-300 dark:hover:bg-slate-500 transition-colors font-medium flex items-center gap-2 text-sm"
             >
               📥 Download JSON
             </a>
             <button
               onClick={onClose}
-              className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium"
+              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium text-sm"
             >
               Close
             </button>

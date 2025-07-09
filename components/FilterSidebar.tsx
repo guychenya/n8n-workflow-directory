@@ -130,6 +130,9 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
         ${isCollapsed ? 'lg:w-0 lg:overflow-hidden lg:p-0' : 'lg:w-80 lg:p-6'}
         top-0 left-0 h-full lg:h-auto bg-sidebar-light dark:bg-sidebar-bg border-r border-gray-200 dark:border-slate-700 
         w-80 p-6 overflow-y-auto z-50
+        backdrop-blur-lg bg-opacity-80 dark:bg-opacity-80
+        shadow-2xl shadow-black/20
+        before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/10 before:via-white/5 before:to-transparent before:pointer-events-none
       `}>
         <div className={`${isCollapsed ? 'lg:hidden' : ''}`}>
         <div className="flex items-center justify-between mb-6">

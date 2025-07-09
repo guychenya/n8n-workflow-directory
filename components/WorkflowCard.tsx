@@ -46,7 +46,11 @@ export const WorkflowCard: React.FC<WorkflowCardProps> = ({ workflow }) => {
   return (
     <>
       <div 
-        className="group bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-2xl border border-gray-200 dark:border-slate-700/50 hover:border-primary/30 cursor-pointer"
+        className="group bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-2xl border border-gray-200 dark:border-slate-700/50 hover:border-primary/30 cursor-pointer
+        backdrop-blur-sm bg-opacity-90 dark:bg-opacity-90
+        shadow-xl shadow-black/10 hover:shadow-2xl hover:shadow-black/20
+        before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/20 before:via-white/5 before:to-transparent before:pointer-events-none before:opacity-0 before:hover:opacity-100 before:transition-opacity before:duration-300
+        relative"
         onClick={() => setIsModalOpen(true)}
       >
       {/* Header with category and complexity */}

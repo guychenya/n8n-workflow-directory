@@ -167,7 +167,11 @@ function App() {
             <div className="hidden lg:block mb-6">
               <button
                 onClick={toggleSidebarCollapsed}
-                className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 text-text-light dark:text-text-dark rounded-md border border-gray-300 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors shadow-sm"
+                className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 text-text-light dark:text-text-dark rounded-md border border-gray-300 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors shadow-sm
+                backdrop-blur-sm bg-opacity-90 dark:bg-opacity-90
+                shadow-lg shadow-black/10 hover:shadow-xl hover:shadow-black/20
+                before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/20 before:via-white/5 before:to-transparent before:pointer-events-none before:rounded-md before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300
+                relative"
                 aria-label={sidebarCollapsed ? 'Expand filters' : 'Collapse filters'}
               >
                 <svg 
@@ -333,7 +337,19 @@ function App() {
               )}
             </main>
             
-            <footer className="text-center mt-12 text-slate-500 text-sm space-y-4">
+            <footer className="text-center mt-12 text-slate-500 text-sm space-y-4 relative overflow-hidden">
+              {/* Bottom water drops decoration */}
+              <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute bottom-4 left-1/4 w-2.5 h-2.5 bg-primary/25 rounded-full blur-sm animate-pulse"></div>
+                <div className="absolute bottom-8 right-1/3 w-3 h-3 bg-secondary/30 rounded-full blur-sm animate-pulse delay-1000"></div>
+                <div className="absolute bottom-2 left-1/2 w-2 h-2 bg-accent/35 rounded-full blur-sm animate-pulse delay-500"></div>
+                <div className="absolute bottom-12 right-1/4 w-1.5 h-1.5 bg-primary/40 rounded-full blur-sm animate-pulse delay-1500"></div>
+                
+                {/* Floating bottom drops */}
+                <div className="absolute bottom-6 left-1/3 w-1 h-1 bg-blue-400/40 rounded-full blur-sm animate-bounce delay-300"></div>
+                <div className="absolute bottom-10 right-1/2 w-2 h-2 bg-cyan-400/30 rounded-full blur-sm animate-bounce delay-700"></div>
+              </div>
+              
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
                 <a href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</a>
                 <a href="/terms" className="hover:text-primary transition-colors">Terms of Service</a>
