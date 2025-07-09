@@ -232,7 +232,37 @@
     </div>
     
     <script>
+      // Set current date
       document.getElementById('current-date').textContent = new Date().toLocaleDateString();
+      
+      // Dark theme detection and application
+      function applyTheme() {
+        const isDark = localStorage.getItem('theme') === 'dark' || 
+                      (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        
+        if (isDark) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      }
+      
+      // Apply theme immediately
+      applyTheme();
+      
+      // Listen for theme changes
+      window.addEventListener('storage', function(e) {
+        if (e.key === 'theme') {
+          applyTheme();
+        }
+      });
+      
+      // Listen for system theme changes
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+        if (!localStorage.getItem('theme') {
+          applyTheme();
+        }
+      });
     </script>
   </body>
 </html>
