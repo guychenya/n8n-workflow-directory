@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Workflow } from '../types';
 import { DownloadIcon } from './icons';
+import { WorkflowModal } from './WorkflowModal';
 
 interface WorkflowCardProps {
   workflow: Workflow;
@@ -39,9 +40,15 @@ export const WorkflowCard: React.FC<WorkflowCardProps> = ({ workflow }) => {
   const categoryColor = categoryColors[category] || categoryColors['Integration'];
   const complexityColor = complexityColors[complexity] || complexityColors['Simple'];
   const triggerIcon = triggerIcons[triggerType] || '🔧';
+  
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-2xl border border-gray-200 dark:border-slate-700/50 hover:border-primary/30">
+    <>
+      <div 
+        className="group bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-2xl border border-gray-200 dark:border-slate-700/50 hover:border-primary/30 cursor-pointer"
+        onClick={() => setIsModalOpen(true)}
+      >
       {/* Header with category and complexity */}
       <div className="p-4 border-b border-gray-200 dark:border-slate-700/50">
         <div className="flex items-center justify-between mb-2">
@@ -65,10 +72,15 @@ export const WorkflowCard: React.FC<WorkflowCardProps> = ({ workflow }) => {
 
       {/* Main content */}
       <div className="p-4 flex-grow">
-        <h3 className="text-lg font-bold text-text-light dark:text-slate-100 mb-2 line-clamp-2">{title}</h3>
+        <h3 className="text-lg font-bold text-text-light dark:text-slate-100 mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+          {title}
+        </h3>
         <p className="text-gray-500 dark:text-slate-400 text-sm leading-relaxed mb-4 line-clamp-3">
           {description}
         </p>
+        <div className="text-xs text-primary opacity-0 group-hover:opacity-100 transition-opacity mb-2">
+          👆 Click to view workflow details
+        </div>
         
         {/* Services */}
         <div className="mb-4">
@@ -106,12 +118,21 @@ export const WorkflowCard: React.FC<WorkflowCardProps> = ({ workflow }) => {
         <a
           href={downloadUrl}
           download={fileName}
+          onClick={(e) => e.stopPropagation()}
           className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary/80 text-white font-semibold py-3 px-4 rounded-md hover:from-primary/90 hover:to-primary/70 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 dark:focus:ring-offset-slate-800 focus:ring-primary shadow-lg hover:shadow-xl"
         >
           <DownloadIcon className="w-5 h-5" />
           <span>Download Workflow</span>
         </a>
       </div>
-    </div>
+      </div>
+
+      {/* Workflow Preview Modal */}
+      <WorkflowModal 
+        workflow={workflow}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+    </>
   );
 };
