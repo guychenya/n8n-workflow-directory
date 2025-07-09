@@ -210,13 +210,13 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
       />
       
       {/* Modal */}
-      <div className="relative bg-white dark:bg-slate-800 rounded-xl shadow-2xl max-w-4xl w-full mx-4 max-h-[75vh] overflow-hidden
+      <div className="relative bg-white dark:bg-slate-800 rounded-xl shadow-2xl max-w-3xl w-full mx-4 max-h-[70vh] overflow-hidden
       backdrop-blur-lg bg-opacity-95 dark:bg-opacity-95
       shadow-2xl shadow-black/30
       before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/20 before:via-white/5 before:to-transparent before:pointer-events-none before:rounded-xl
       border border-white/20 dark:border-slate-600/30">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-slate-700 bg-gradient-to-r from-primary/5 to-secondary/5 dark:from-slate-700 dark:to-slate-700">
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-slate-700 bg-gradient-to-r from-primary/5 to-secondary/5 dark:from-slate-700 dark:to-slate-700">
           <div className="flex-1">
             <h2 className="text-2xl font-bold text-text-light dark:text-text-dark mb-2">
               {workflowData?.name || workflow.title}
@@ -248,7 +248,7 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
         <div className="flex border-b border-gray-200 dark:border-slate-700">
           <button
             onClick={() => setActiveTab('visual')}
-            className={`flex-1 px-6 py-3 font-medium transition-colors ${
+            className={`flex-1 px-4 py-2 font-medium transition-colors ${
               activeTab === 'visual'
                 ? 'text-primary border-b-2 border-primary bg-primary/5'
                 : 'text-gray-600 dark:text-slate-400 hover:text-primary'
@@ -258,7 +258,7 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
           </button>
           <button
             onClick={() => setActiveTab('details')}
-            className={`flex-1 px-6 py-3 font-medium transition-colors ${
+            className={`flex-1 px-4 py-2 font-medium transition-colors ${
               activeTab === 'details'
                 ? 'text-primary border-b-2 border-primary bg-primary/5'
                 : 'text-gray-600 dark:text-slate-400 hover:text-primary'
@@ -269,7 +269,7 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(75vh-200px)]">
+        <div className="p-4 overflow-y-auto max-h-[calc(70vh-180px)]">
           {loading && (
             <div className="flex items-center justify-center py-12">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -443,21 +443,21 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between p-4 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-700/50 min-h-[80px]">
-          <div className="text-sm text-gray-600 dark:text-slate-400">
+        <div className="flex items-center justify-between p-3 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-700/50 min-h-[60px]">
+          <div className="text-xs text-gray-600 dark:text-slate-400">
             File: {workflow.fileName}
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-2">
             <a
               href={`/workflows/${workflow.fileName}`}
               download={workflow.fileName}
-              className="px-4 py-2 bg-gray-200 dark:bg-slate-600 text-gray-700 dark:text-slate-200 rounded-lg hover:bg-gray-300 dark:hover:bg-slate-500 transition-colors font-medium flex items-center gap-2 text-sm"
+              className="px-3 py-1.5 bg-gray-200 dark:bg-slate-600 text-gray-700 dark:text-slate-200 rounded-md hover:bg-gray-300 dark:hover:bg-slate-500 transition-colors font-medium flex items-center gap-1.5 text-xs"
             >
               📥 Download JSON
             </a>
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium text-sm"
+              className="px-3 py-1.5 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors font-medium text-xs"
             >
               Close
             </button>
