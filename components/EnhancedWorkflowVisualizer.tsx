@@ -285,7 +285,7 @@ export const EnhancedWorkflowVisualizer: React.FC<EnhancedWorkflowVisualizerProp
   }
 
   return (
-    <div className="h-[600px] w-full border border-gray-200 dark:border-slate-700 rounded-xl overflow-hidden shadow-lg">
+    <div className="h-[500px] w-full border border-gray-200 dark:border-slate-700 rounded-xl overflow-hidden shadow-lg">
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -311,8 +311,10 @@ export const EnhancedWorkflowVisualizer: React.FC<EnhancedWorkflowVisualizerProp
           className="dark:!bg-slate-800"
         />
         <Controls 
-          className="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg shadow-lg"
+          className="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg shadow-lg !bottom-4 !left-4"
           showInteractive={false}
+          showZoom={true}
+          showFitView={true}
         />
         <MiniMap 
           className="bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-lg shadow-lg"
