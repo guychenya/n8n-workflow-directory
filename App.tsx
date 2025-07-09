@@ -238,8 +238,21 @@ function App() {
               <WorkflowGrid workflows={filteredWorkflows} />
             </main>
             
-            <footer className="text-center mt-12 text-slate-500 text-sm">
-              <p>Built for the n8n community. Not affiliated with n8n GmbH.</p>
+            <footer className="text-center mt-12 text-slate-500 text-sm space-y-4">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
+                <a href="/privacy" className="hover:text-brand-primary transition-colors">Privacy Policy</a>
+                <a href="/terms" className="hover:text-brand-primary transition-colors">Terms of Service</a>
+                <a href="https://github.com/guychenya/n8n-workflow-directory" className="hover:text-brand-primary transition-colors">GitHub</a>
+                <a href="https://www.guyc.dev" className="hover:text-brand-primary transition-colors">Contact</a>
+              </div>
+              <div className="space-y-2">
+                <p>Built for the n8n community. Not affiliated with n8n GmbH.</p>
+                <p className="text-xs text-slate-600">
+                  All workflows are sourced from public repositories under MIT license. 
+                  <br className="sm:hidden" /> 
+                  Workflows are provided "as is" without warranty.
+                </p>
+              </div>
             </footer>
           </div>
         </div>
