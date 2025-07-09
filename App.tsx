@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Header } from './components/Header';
 import { FilterSidebar } from './components/FilterSidebar';
 import { WorkflowGrid } from './components/WorkflowGrid';
-import { workflows as allWorkflows } from './data/workflows';
+import { workflows as allWorkflows } from './test-minimal-workflows';
 import type { FilterState, ServiceCategory } from './types';
 
 function App() {
