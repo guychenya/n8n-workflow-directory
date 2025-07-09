@@ -1,5 +1,5 @@
 import type { Workflow } from '../types';
-import { categorizeWorkflow, generateWorkflowTitle, generateWorkflowDescription } from '../utils/categorizeWorkflows';
+import { categorizeWorkflow, generateWorkflowTitle, generateWorkflowDescription } from '../utils/optimizedCategorizeWorkflows';
 
 // Function to extract the number from filename for ID
 function extractIdFromFilename(fileName: string): number {
@@ -2078,28 +2078,56 @@ const allWorkflowPaths: string[] = [
   "workflows/social_media_poster.json",
 ];
 
-// Process all workflows
-export const workflows: Workflow[] = allWorkflowPaths.map(filePath => {
-  const fileName = extractFileName(filePath);
-  const id = extractIdFromFilename(fileName);
-  const categorization = categorizeWorkflow(fileName);
-  const title = generateWorkflowTitle(fileName);
-  const description = generateWorkflowDescription(
-    categorization.services,
-    categorization.operation,
-    categorization.triggerType
-  );
+// Process all workflows with error handling and performance optimization
+export const workflows: Workflow[] = (() => {
+  console.log('Processing workflows...', allWorkflowPaths.length);
+  const startTime = performance.now();
+  
+  const processedWorkflows: Workflow[] = [];
+  let errorCount = 0;
+  
+  for (let i = 0; i < allWorkflowPaths.length; i++) {
+    try {
+      const filePath = allWorkflowPaths[i];
+      const fileName = extractFileName(filePath);
+      const id = extractIdFromFilename(fileName);
+      const categorization = categorizeWorkflow(fileName);
+      const title = generateWorkflowTitle(fileName);
+      const description = generateWorkflowDescription(
+        categorization.services,
+        categorization.operation,
+        categorization.triggerType
+      );
 
-  return {
-    id,
-    title,
-    description,
-    category: categorization.category,
-    fileName,
-    services: categorization.services,
-    triggerType: categorization.triggerType,
-    operation: categorization.operation,
-    complexity: categorization.complexity,
-    tags: categorization.tags
-  };
-});
+      processedWorkflows.push({
+        id,
+        title,
+        description,
+        category: categorization.category,
+        fileName,
+        services: categorization.services,
+        triggerType: categorization.triggerType,
+        operation: categorization.operation,
+        complexity: categorization.complexity,
+        tags: categorization.tags
+      });
+      
+      // Progress logging every 500 workflows
+      if (i > 0 && i % 500 === 0) {
+        console.log(`Processed ${i}/${allWorkflowPaths.length} workflows`);
+      }
+    } catch (error) {
+      errorCount++;
+      console.warn(`Error processing workflow ${i}:`, allWorkflowPaths[i], error);
+      // Continue processing other workflows
+    }
+  }
+  
+  const endTime = performance.now();
+  console.log(`Workflow processing completed: ${processedWorkflows.length} workflows processed in ${(endTime - startTime).toFixed(2)}ms`);
+  if (errorCount > 0) {
+    console.warn(`${errorCount} workflows had processing errors`);
+  }
+  
+  return processedWorkflows;
+})();
