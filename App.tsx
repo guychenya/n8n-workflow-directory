@@ -17,10 +17,14 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [displayedCount, setDisplayedCount] = useState(24); // Initial load: 24 workflows
 
-  // Debug: Log workflow count
-  console.log('Total workflows loaded:', allWorkflows.length);
-  if (allWorkflows.length > 0) {
-    console.log('First workflow:', allWorkflows[0]);
+  // Debug: Log workflow count (only in development)
+  if (import.meta.env.DEV) {
+    console.log('Total workflows loaded:', allWorkflows.length);
+    if (allWorkflows.length > 0) {
+      console.log('First workflow:', allWorkflows[0]);
+      console.log('Displayed workflows:', displayedWorkflows.length);
+      console.log('Has more workflows:', hasMoreWorkflows);
+    }
   }
 
   // Generate filter options from workflow data
@@ -247,7 +251,16 @@ function App() {
                 </div>
 
                 {/* No results message */}
-                {allFilteredWorkflows.length === 0 && (
+                {allWorkflows.length === 0 && (
+                  <div className="text-center py-12">
+                    <div className="text-slate-400 text-lg mb-2">Loading workflows...</div>
+                    <div className="text-slate-500 text-sm">
+                      If this persists, there may be an issue loading the workflow data.
+                    </div>
+                  </div>
+                )}
+                
+                {allWorkflows.length > 0 && allFilteredWorkflows.length === 0 && (
                   <div className="text-center py-12">
                     <div className="text-slate-400 text-lg mb-2">No workflows found</div>
                     <div className="text-slate-500 text-sm">
