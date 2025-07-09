@@ -18,7 +18,7 @@ This application provides an enhanced user interface and experience for workflow
 
 ## Attribution
 
-This project incorporates workflows from open-source repositories. Special credit and recognition goes to the original repository owner: **Manthan** ([LinkedIn Profile](https://www.linkedin.com/in/manthan-ank/)).
+This project incorporates workflows from open-source repositories. Special credit and recognition goes to the original repository owner: **Manthan Patel** ([LinkedIn Profile](https://www.linkedin.com/in/leadgenmanthan)).
 
 ## Development
 

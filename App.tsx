@@ -338,7 +338,6 @@ function App() {
                 <a href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</a>
                 <a href="/terms" className="hover:text-primary transition-colors">Terms of Service</a>
                 <a href="https://github.com/guychenya/n8n-workflow-directory" className="hover:text-primary transition-colors">GitHub</a>
-                <a href="https://www.guyc.dev" className="hover:text-primary transition-colors">Contact</a>
               </div>
               <div className="space-y-2">
                 <p>Built for the n8n community. Not affiliated with n8n GmbH.</p>
