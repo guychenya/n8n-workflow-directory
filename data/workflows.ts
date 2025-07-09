@@ -1,5 +1,6 @@
 import type { Workflow } from '../types';
 import { categorizeWorkflow, generateWorkflowTitle, generateWorkflowDescription } from '../utils/optimizedCategorizeWorkflows';
+import { filterValidWorkflows } from '../utils/validateWorkflows';
 
 // Function to extract the number from filename for ID
 function extractIdFromFilename(fileName: string): number {
@@ -2083,12 +2084,15 @@ export const workflows: Workflow[] = (() => {
   console.log('Processing workflows...', allWorkflowPaths.length);
   const startTime = performance.now();
   
+  // Filter out empty and invalid workflow files
+  const validWorkflowPaths = filterValidWorkflows(allWorkflowPaths);
+  
   const processedWorkflows: Workflow[] = [];
   let errorCount = 0;
   
-  for (let i = 0; i < allWorkflowPaths.length; i++) {
+  for (let i = 0; i < validWorkflowPaths.length; i++) {
     try {
-      const filePath = allWorkflowPaths[i];
+      const filePath = validWorkflowPaths[i];
       const fileName = extractFileName(filePath);
       const id = extractIdFromFilename(fileName);
       const categorization = categorizeWorkflow(fileName);
@@ -2114,17 +2118,18 @@ export const workflows: Workflow[] = (() => {
       
       // Progress logging every 500 workflows
       if (i > 0 && i % 500 === 0) {
-        console.log(`Processed ${i}/${allWorkflowPaths.length} workflows`);
+        console.log(`Processed ${i}/${validWorkflowPaths.length} workflows`);
       }
     } catch (error) {
       errorCount++;
-      console.warn(`Error processing workflow ${i}:`, allWorkflowPaths[i], error);
+      console.warn(`Error processing workflow ${i}:`, validWorkflowPaths[i], error);
       // Continue processing other workflows
     }
   }
   
   const endTime = performance.now();
   console.log(`Workflow processing completed: ${processedWorkflows.length} workflows processed in ${(endTime - startTime).toFixed(2)}ms`);
+  console.log(`Filtered out ${allWorkflowPaths.length - validWorkflowPaths.length} invalid/empty workflows`);
   if (errorCount > 0) {
     console.warn(`${errorCount} workflows had processing errors`);
   }
