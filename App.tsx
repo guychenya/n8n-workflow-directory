@@ -485,6 +485,7 @@ function App() {
         onWorkflowSelect={handleWorkflowSelect}
         onApplyFilters={handleApplyFilters}
         searchMode={globalSearchMode}
+        currentFilters={filters}
       />
 
       {/* Enhanced Workflow Modal */}

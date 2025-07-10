@@ -8,6 +8,7 @@ interface GlobalSearchProps {
   onWorkflowSelect: (workflow: Workflow) => void;
   onApplyFilters: (filters: FilterState) => void;
   searchMode: 'global' | 'category'; // 'global' for Cmd+K, 'category' for /
+  currentFilters: FilterState;
 }
 
 interface SearchResult {
@@ -26,11 +27,14 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
   onClose,
   onWorkflowSelect,
   onApplyFilters,
-  searchMode
+  searchMode,
+  currentFilters
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [results, setResults] = useState<SearchResult[]>([]);
+  const [multiSelectMode, setMultiSelectMode] = useState(false);
+  const [tempFilters, setTempFilters] = useState<FilterState>(currentFilters);
   const inputRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
 
@@ -43,12 +47,24 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
     return Array.from(categoryMap.entries()).map(([name, count]) => ({ name, count }));
   }, [workflows]);
 
-  // Generate search results
+  // Reset state when modal opens
   useEffect(() => {
-    if (!isOpen) {
+    if (isOpen) {
+      setSearchTerm('');
+      setSelectedIndex(0);
+      setMultiSelectMode(false);
+      setTempFilters(currentFilters);
+    } else {
       setResults([]);
       setSearchTerm('');
       setSelectedIndex(0);
+      setMultiSelectMode(false);
+    }
+  }, [isOpen, currentFilters]);
+
+  // Generate search results
+  useEffect(() => {
+    if (!isOpen) {
       return;
     }
 
@@ -141,7 +157,11 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
         case 'Enter':
           e.preventDefault();
           if (results[selectedIndex]) {
-            handleResultSelect(results[selectedIndex]);
+            if (e.shiftKey || multiSelectMode) {
+              handleMultiSelect(results[selectedIndex]);
+            } else {
+              handleResultSelect(results[selectedIndex]);
+            }
           }
           break;
         case 'Escape':
@@ -192,6 +212,26 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
     onClose();
   };
 
+  const handleMultiSelect = (result: SearchResult) => {
+    if (result.type === 'category') {
+      // Toggle category filter
+      setTempFilters(prev => ({
+        ...prev,
+        category: prev.category === result.category ? 'All' : result.category!
+      }));
+    }
+    setMultiSelectMode(true);
+  };
+
+  const applyTempFilters = () => {
+    onApplyFilters(tempFilters);
+    onClose();
+  };
+
+  const toggleMultiSelectMode = () => {
+    setMultiSelectMode(!multiSelectMode);
+  };
+
   const getResultIcon = (result: SearchResult) => {
     if (result.type === 'category') {
       return '🏷️';
@@ -239,9 +279,23 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
             className="flex-1 bg-transparent text-text-light dark:text-text-dark placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none text-lg"
           />
           <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-slate-500">
+            {multiSelectMode && (
+              <button
+                onClick={applyTempFilters}
+                className="px-2 py-1 bg-primary text-white rounded text-xs hover:bg-primary/90"
+              >
+                Apply ({Object.values(tempFilters).filter(v => v && v !== 'All' && (Array.isArray(v) ? v.length > 0 : true)).length})
+              </button>
+            )}
+            <button
+              onClick={toggleMultiSelectMode}
+              className={`px-2 py-1 rounded text-xs ${multiSelectMode ? 'bg-primary text-white' : 'bg-gray-100 dark:bg-slate-700'}`}
+            >
+              Multi
+            </button>
             <kbd className="px-2 py-1 bg-gray-100 dark:bg-slate-700 rounded border">↑↓</kbd>
             <span>navigate</span>
-            <kbd className="px-2 py-1 bg-gray-100 dark:bg-slate-700 rounded border">Enter</kbd>
+            <kbd className="px-2 py-1 bg-gray-100 dark:bg-slate-700 rounded border">{multiSelectMode ? 'Shift+' : ''}Enter</kbd>
             <span>select</span>
             <kbd className="px-2 py-1 bg-gray-100 dark:bg-slate-700 rounded border">Esc</kbd>
             <span>close</span>
@@ -261,12 +315,12 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
             results.map((result, index) => (
               <button
                 key={result.id}
-                onClick={() => handleResultSelect(result)}
+                onClick={() => multiSelectMode ? handleMultiSelect(result) : handleResultSelect(result)}
                 className={`w-full flex items-center gap-3 p-4 text-left transition-colors hover:bg-gray-50 dark:hover:bg-slate-700 ${
                   index === selectedIndex 
                     ? 'bg-primary/10 dark:bg-primary/20 border-r-2 border-primary' 
                     : ''
-                }`}
+                } ${multiSelectMode && result.type === 'category' && tempFilters.category === result.category ? 'bg-green-100 dark:bg-green-900/30' : ''}`}
               >
                 <div className="text-xl flex-shrink-0">
                   {getResultIcon(result)}
