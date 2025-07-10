@@ -218,12 +218,18 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
   };
 
   const handleMultiSelect = (result: SearchResult) => {
+    console.log('Multi-select triggered:', { result, multiSelectMode, tempFilters });
+    
     if (result.type === 'category') {
       // Toggle category filter
-      setTempFilters(prev => ({
-        ...prev,
-        category: prev.category === result.category ? 'All' : result.category!
-      }));
+      setTempFilters(prev => {
+        const newCategory = prev.category === result.category ? 'All' : result.category!;
+        console.log('Category filter changed:', prev.category, '->', newCategory);
+        return {
+          ...prev,
+          category: newCategory
+        };
+      });
     } else if (result.type === 'workflow' && result.workflow) {
       // Toggle service filters based on workflow services
       const workflow = result.workflow;
@@ -237,6 +243,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
           }
         });
         
+        console.log('Services filter changed:', prev.services, '->', newServices);
         return {
           ...prev,
           services: newServices,
@@ -245,7 +252,11 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
         };
       });
     }
-    setMultiSelectMode(true);
+    
+    if (!multiSelectMode) {
+      console.log('Enabling multi-select mode');
+      setMultiSelectMode(true);
+    }
   };
 
   const applyTempFilters = () => {
@@ -254,7 +265,14 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
   };
 
   const toggleMultiSelectMode = () => {
-    setMultiSelectMode(!multiSelectMode);
+    const newMode = !multiSelectMode;
+    console.log('Toggling multi-select mode:', multiSelectMode, '->', newMode);
+    setMultiSelectMode(newMode);
+    
+    // Reset temp filters when turning off multi-select
+    if (!newMode) {
+      setTempFilters(currentFilters);
+    }
   };
 
   const getResultIcon = (result: SearchResult) => {
@@ -317,9 +335,14 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
             )}
             <button
               onClick={toggleMultiSelectMode}
-              className={`px-2 py-1 rounded text-xs ${multiSelectMode ? 'bg-primary text-white' : 'bg-gray-100 dark:bg-slate-700'}`}
+              className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+                multiSelectMode 
+                  ? 'bg-primary text-white shadow-md' 
+                  : 'bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600'
+              }`}
+              title={multiSelectMode ? 'Exit multi-select mode' : 'Enable multi-select mode'}
             >
-              Multi
+              {multiSelectMode ? '✓ Multi' : 'Multi'}
             </button>
             <kbd className="px-2 py-1 bg-gray-100 dark:bg-slate-700 rounded border">↑↓</kbd>
             <span>navigate</span>
@@ -353,7 +376,14 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
             results.map((result, index) => (
               <button
                 key={result.id}
-                onClick={() => multiSelectMode ? handleMultiSelect(result) : handleResultSelect(result)}
+                onClick={(e) => {
+                  console.log('Item clicked:', { result, multiSelectMode, shiftKey: e.shiftKey });
+                  if (multiSelectMode || e.shiftKey) {
+                    handleMultiSelect(result);
+                  } else {
+                    handleResultSelect(result);
+                  }
+                }}
                 className={`w-full flex items-center gap-3 p-3 sm:p-4 text-left transition-colors hover:bg-gray-50 dark:hover:bg-slate-700 ${
                   index === selectedIndex 
                     ? 'bg-primary/10 dark:bg-primary/20 border-r-2 border-primary' 
