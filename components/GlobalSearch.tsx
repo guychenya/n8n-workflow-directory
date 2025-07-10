@@ -295,7 +295,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder={getSearchPlaceholder()}
+            placeholder={multiSelectMode ? "Click items to select multiple filters..." : getSearchPlaceholder()}
             className="flex-1 bg-transparent text-text-light dark:text-text-dark placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none text-lg"
           />
           <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-slate-500">
@@ -321,6 +321,16 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
             <span>close</span>
           </div>
         </div>
+
+        {/* Multi-select banner */}
+        {multiSelectMode && (
+          <div className="bg-blue-50 dark:bg-blue-900/30 px-4 py-2 border-b border-blue-200 dark:border-blue-700">
+            <div className="flex items-center gap-2 text-sm text-blue-700 dark:text-blue-300">
+              <span>🎯</span>
+              <span>Multi-select mode: Click items to add filters. Green items are selected.</span>
+            </div>
+          </div>
+        )}
 
         {/* Search Results */}
         <div 

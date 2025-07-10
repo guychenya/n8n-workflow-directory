@@ -32,21 +32,24 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   // Keyboard shortcuts for sidebar search
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Only work when sidebar is open and not already focused on input
-      if (!isOpen || document.activeElement?.tagName === 'INPUT') return;
+      // Only work when sidebar is open/visible and not already focused on input
+      if (!isOpen && isCollapsed) return;
+      if (document.activeElement?.tagName === 'INPUT' || document.activeElement?.tagName === 'TEXTAREA') return;
       
       // 's' key to focus search (common in many apps like GitHub, Slack)
-      if (e.key === 's' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      if (e.key === 's' && !e.ctrlKey && !e.metaKey && !e.altKey && !e.shiftKey) {
         e.preventDefault();
+        console.log('S key pressed, focusing search input'); // Debug log
         searchInputRef.current?.focus();
       }
     };
 
-    if (isOpen) {
+    // Add listener when sidebar is visible (open on mobile OR not collapsed on desktop)
+    if (isOpen || !isCollapsed) {
       document.addEventListener('keydown', handleKeyDown);
       return () => document.removeEventListener('keydown', handleKeyDown);
     }
-  }, [isOpen]);
+  }, [isOpen, isCollapsed]);
 
   const toggleSection = (section: string) => {
     const newExpanded = new Set(expandedSections);
