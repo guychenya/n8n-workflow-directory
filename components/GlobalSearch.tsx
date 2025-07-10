@@ -148,15 +148,20 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
       switch (e.key) {
         case 'ArrowDown':
           e.preventDefault();
-          setSelectedIndex(prev => (prev + 1) % results.length);
+          if (results.length > 0) {
+            setSelectedIndex(prev => (prev + 1) % results.length);
+          }
           break;
         case 'ArrowUp':
           e.preventDefault();
-          setSelectedIndex(prev => (prev - 1 + results.length) % results.length);
+          if (results.length > 0) {
+            setSelectedIndex(prev => (prev - 1 + results.length) % results.length);
+          }
           break;
         case 'Enter':
           e.preventDefault();
-          if (results[selectedIndex]) {
+          if (results.length > 0 && results[selectedIndex]) {
+            console.log('Enter pressed:', { shiftKey: e.shiftKey, multiSelectMode, selectedIndex, result: results[selectedIndex] });
             if (e.shiftKey || multiSelectMode) {
               handleMultiSelect(results[selectedIndex]);
             } else {

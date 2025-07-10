@@ -25,7 +25,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   isCollapsed = false
 }) => {
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
-    new Set(['categories', 'services', 'triggers'])
+    new Set(['categories', 'services', 'triggers', 'operations', 'complexity'])
   );
   const searchInputRef = useRef<HTMLInputElement>(null);
 
