@@ -283,7 +283,7 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
   };
 
   const handleKeyPress = (e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
+    if (e.key === 'Escape' && !showCodeSnippet) {
       onClose();
     }
   };
@@ -301,7 +301,7 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
       document.removeEventListener('keydown', handleKeyPress);
       document.body.style.overflow = 'unset';
     };
-  }, [isOpen]);
+  }, [isOpen, showCodeSnippet]);
 
   if (!isOpen || !workflow) return null;
 

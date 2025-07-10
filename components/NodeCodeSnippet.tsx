@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface N8nNode {
   id: string;
@@ -29,6 +29,22 @@ export const NodeCodeSnippet: React.FC<NodeCodeSnippetProps> = ({ node, isOpen, 
       console.error('Failed to copy to clipboard:', err);
     }
   };
+
+  // Handle ESC key to close only this modal (prevent bubbling to parent)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        e.stopPropagation(); // Prevent event from bubbling to parent modal
+        e.preventDefault();
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown, true); // Use capture phase
+      return () => document.removeEventListener('keydown', handleKeyDown, true);
+    }
+  }, [isOpen, onClose]);
 
   const formatNodeData = (node: N8nNode) => {
     // Create a clean version of the node data for display
