@@ -219,6 +219,26 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
         ...prev,
         category: prev.category === result.category ? 'All' : result.category!
       }));
+    } else if (result.type === 'workflow' && result.workflow) {
+      // Toggle service filters based on workflow services
+      const workflow = result.workflow;
+      setTempFilters(prev => {
+        const newServices = [...prev.services];
+        
+        // Add services from this workflow that aren't already selected
+        workflow.services.forEach(service => {
+          if (!newServices.includes(service)) {
+            newServices.push(service);
+          }
+        });
+        
+        return {
+          ...prev,
+          services: newServices,
+          // Also set category if not already set
+          category: prev.category === 'All' ? workflow.category : prev.category
+        };
+      });
     }
     setMultiSelectMode(true);
   };
@@ -320,7 +340,13 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
                   index === selectedIndex 
                     ? 'bg-primary/10 dark:bg-primary/20 border-r-2 border-primary' 
                     : ''
-                } ${multiSelectMode && result.type === 'category' && tempFilters.category === result.category ? 'bg-green-100 dark:bg-green-900/30' : ''}`}
+                } ${
+                  multiSelectMode && (
+                    (result.type === 'category' && tempFilters.category === result.category) ||
+                    (result.type === 'workflow' && result.workflow && 
+                     result.workflow.services.some(service => tempFilters.services.includes(service)))
+                  ) ? 'bg-green-100 dark:bg-green-900/30 border-l-2 border-green-500' : ''
+                }`}
               >
                 <div className="text-xl flex-shrink-0">
                   {getResultIcon(result)}

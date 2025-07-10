@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import type { FilterState, ServiceCategory } from '../types';
 
 interface FilterSidebarProps {
@@ -27,6 +27,31 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
     new Set(['categories', 'services', 'triggers'])
   );
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // Keyboard shortcuts for sidebar search
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Only work when sidebar is open and not already focused on input
+      if (!isOpen || document.activeElement?.tagName === 'INPUT') return;
+      
+      // Ctrl+F or Cmd+F to focus search
+      if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+      // 's' key to focus search (common in many apps)
+      else if (e.key === 's' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown);
+      return () => document.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [isOpen]);
 
   const toggleSection = (section: string) => {
     const newExpanded = new Set(expandedSections);
@@ -159,11 +184,12 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
             Search workflows
           </label>
           <input
+            ref={searchInputRef}
             type="text"
             value={filters.searchTerm}
             onChange={(e) => onFiltersChange({ ...filters, searchTerm: e.target.value })}
             className="w-full px-3 py-2 bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md text-text-light dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-            placeholder="Search by title, service, or description..."
+            placeholder="Search by title, service, or description... (Ctrl/Cmd+F or 'S')"
           />
         </div>
 
