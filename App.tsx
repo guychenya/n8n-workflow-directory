@@ -185,6 +185,34 @@ function App() {
     resetDisplayedCount();
   };
 
+  // Clear individual filters
+  const clearCategoryFilter = () => {
+    setFilters(prev => ({ ...prev, category: 'All' }));
+  };
+
+  const clearServiceFilter = (service: string) => {
+    setFilters(prev => ({ 
+      ...prev, 
+      services: prev.services.filter(s => s !== service) 
+    }));
+  };
+
+  const clearTriggerTypeFilter = () => {
+    setFilters(prev => ({ ...prev, triggerType: '' }));
+  };
+
+  const clearOperationFilter = () => {
+    setFilters(prev => ({ ...prev, operation: '' }));
+  };
+
+  const clearComplexityFilter = () => {
+    setFilters(prev => ({ ...prev, complexity: '' }));
+  };
+
+  const clearSearchFilter = () => {
+    setFilters(prev => ({ ...prev, searchTerm: '' }));
+  };
+
   return (
     <div className="min-h-screen bg-bg-light dark:bg-bg-dark font-sans">
       <div className="flex">
@@ -295,13 +323,27 @@ function App() {
                       <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-slate-400">
                         <span>Filtered by:</span>
                         {filters.category !== 'All' && (
-                          <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">
+                          <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium flex items-center gap-1 group">
                             {filters.category}
+                            <button
+                              onClick={clearCategoryFilter}
+                              className="ml-1 hover:bg-primary/30 rounded-full p-0.5 opacity-60 hover:opacity-100 transition-opacity"
+                              aria-label={`Clear ${filters.category} filter`}
+                            >
+                              ×
+                            </button>
                           </span>
                         )}
                         {filters.services.slice(0, 2).map(service => (
-                          <span key={service} className="bg-blue-500/20 text-blue-400 px-2 py-1 rounded text-xs">
+                          <span key={service} className="bg-blue-500/20 text-blue-400 px-2 py-1 rounded text-xs flex items-center gap-1 group">
                             {service}
+                            <button
+                              onClick={() => clearServiceFilter(service)}
+                              className="ml-1 hover:bg-blue-500/30 rounded-full p-0.5 opacity-60 hover:opacity-100 transition-opacity"
+                              aria-label={`Clear ${service} filter`}
+                            >
+                              ×
+                            </button>
                           </span>
                         ))}
                         {filters.services.length > 2 && (
@@ -310,18 +352,39 @@ function App() {
                           </span>
                         )}
                         {filters.triggerType && (
-                          <span className="bg-green-500/20 text-green-400 px-2 py-1 rounded text-xs">
+                          <span className="bg-green-500/20 text-green-400 px-2 py-1 rounded text-xs flex items-center gap-1 group">
                             {filters.triggerType}
+                            <button
+                              onClick={clearTriggerTypeFilter}
+                              className="ml-1 hover:bg-green-500/30 rounded-full p-0.5 opacity-60 hover:opacity-100 transition-opacity"
+                              aria-label={`Clear ${filters.triggerType} filter`}
+                            >
+                              ×
+                            </button>
                           </span>
                         )}
                         {filters.operation && (
-                          <span className="bg-purple-500/20 text-purple-400 px-2 py-1 rounded text-xs">
+                          <span className="bg-purple-500/20 text-purple-400 px-2 py-1 rounded text-xs flex items-center gap-1 group">
                             {filters.operation}
+                            <button
+                              onClick={clearOperationFilter}
+                              className="ml-1 hover:bg-purple-500/30 rounded-full p-0.5 opacity-60 hover:opacity-100 transition-opacity"
+                              aria-label={`Clear ${filters.operation} filter`}
+                            >
+                              ×
+                            </button>
                           </span>
                         )}
                         {filters.complexity && (
-                          <span className="bg-orange-500/20 text-orange-400 px-2 py-1 rounded text-xs">
+                          <span className="bg-orange-500/20 text-orange-400 px-2 py-1 rounded text-xs flex items-center gap-1 group">
                             {filters.complexity}
+                            <button
+                              onClick={clearComplexityFilter}
+                              className="ml-1 hover:bg-orange-500/30 rounded-full p-0.5 opacity-60 hover:opacity-100 transition-opacity"
+                              aria-label={`Clear ${filters.complexity} filter`}
+                            >
+                              ×
+                            </button>
                           </span>
                         )}
                       </div>
