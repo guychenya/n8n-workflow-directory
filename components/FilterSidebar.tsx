@@ -35,13 +35,8 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       // Only work when sidebar is open and not already focused on input
       if (!isOpen || document.activeElement?.tagName === 'INPUT') return;
       
-      // Ctrl+F or Cmd+F to focus search
-      if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
-        e.preventDefault();
-        searchInputRef.current?.focus();
-      }
-      // 's' key to focus search (common in many apps)
-      else if (e.key === 's' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      // 's' key to focus search (common in many apps like GitHub, Slack)
+      if (e.key === 's' && !e.ctrlKey && !e.metaKey && !e.altKey) {
         e.preventDefault();
         searchInputRef.current?.focus();
       }
@@ -189,7 +184,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
             value={filters.searchTerm}
             onChange={(e) => onFiltersChange({ ...filters, searchTerm: e.target.value })}
             className="w-full px-3 py-2 bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md text-text-light dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-            placeholder="Search by title, service, or description... (Ctrl/Cmd+F or 'S')"
+            placeholder="Search by title, service, or description... (Press 'S')"
           />
         </div>
 
