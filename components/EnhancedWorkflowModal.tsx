@@ -34,6 +34,12 @@ interface CollapsibleSectionProps {
   defaultOpen?: boolean;
 }
 
+interface ExpandableCodeBlockProps {
+  code: string;
+  language: string;
+  maxHeight?: string;
+}
+
 const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({ 
   title, 
   icon, 
@@ -64,6 +70,104 @@ const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
           {children}
         </div>
       )}
+    </div>
+  );
+};
+
+const ExpandableCodeBlock: React.FC<ExpandableCodeBlockProps> = ({ 
+  code, 
+  language, 
+  maxHeight = "200px" 
+}) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(code);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy code:', err);
+    }
+  };
+
+  const toggleExpanded = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  return (
+    <div className="relative border border-gray-200 dark:border-slate-600 rounded-lg overflow-hidden bg-gray-50 dark:bg-slate-900">
+      {/* Header with controls */}
+      <div className="flex items-center justify-between px-3 py-2 bg-gray-100 dark:bg-slate-800 border-b border-gray-200 dark:border-slate-600">
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-medium text-gray-600 dark:text-slate-400 uppercase tracking-wider">
+            {language}
+          </span>
+          <span className="text-xs text-gray-500 dark:text-slate-500">
+            {code.split('\n').length} lines
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleCopy}
+            className="flex items-center gap-1 px-2 py-1 text-xs bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded hover:bg-gray-50 dark:hover:bg-slate-600 transition-colors"
+            title="Copy to clipboard"
+          >
+            {isCopied ? (
+              <>
+                <svg className="w-3 h-3 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span className="text-green-600 dark:text-green-400">Copied!</span>
+              </>
+            ) : (
+              <>
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                <span>Copy</span>
+              </>
+            )}
+          </button>
+          <button
+            onClick={toggleExpanded}
+            className="flex items-center gap-1 px-2 py-1 text-xs bg-primary text-white rounded hover:bg-primary/90 transition-colors"
+            title={isExpanded ? "Collapse" : "Expand"}
+          >
+            <svg 
+              className={`w-3 h-3 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+            <span>{isExpanded ? 'Collapse' : 'Expand'}</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Code content */}
+      <div 
+        className={`relative transition-all duration-300 ease-in-out ${
+          isExpanded ? 'max-h-none' : 'max-h-[200px]'
+        } overflow-hidden`}
+      >
+        <pre 
+          className={`p-4 text-xs sm:text-sm font-mono bg-gray-50 dark:bg-slate-900 text-gray-800 dark:text-slate-200 overflow-x-auto ${
+            !isExpanded ? 'overflow-y-hidden' : 'overflow-y-auto'
+          }`}
+          style={{ maxHeight: isExpanded ? 'none' : maxHeight }}
+        >
+          <code>{code}</code>
+        </pre>
+        
+        {/* Fade out gradient when collapsed */}
+        {!isExpanded && (
+          <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-gray-50 dark:from-slate-900 to-transparent pointer-events-none"></div>
+        )}
+      </div>
     </div>
   );
 };
@@ -435,6 +539,14 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
                         <span className="text-gray-700 dark:text-slate-300">{workflow.complexity}</span>
                       </div>
                     </div>
+                  </CollapsibleSection>
+
+                  <CollapsibleSection title="Raw Workflow JSON" icon="📄">
+                    <ExpandableCodeBlock 
+                      code={JSON.stringify(workflowData, null, 2)}
+                      language="json"
+                      maxHeight="300px"
+                    />
                   </CollapsibleSection>
                 </div>
               )}
