@@ -152,6 +152,9 @@ function App() {
       // Cmd+K (Mac) or Ctrl+K (Windows/Linux) for global search
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
+        // Auto-hide sidebar when global search opens
+        setSidebarOpen(false); // Hide mobile sidebar
+        setSidebarCollapsed(true); // Collapse desktop sidebar
         setGlobalSearchMode('global');
         setGlobalSearchOpen(true);
       }
@@ -161,6 +164,9 @@ function App() {
         const activeElement = document.activeElement;
         if (activeElement?.tagName !== 'INPUT' && activeElement?.tagName !== 'TEXTAREA') {
           e.preventDefault();
+          // Auto-hide sidebar when global search opens
+          setSidebarOpen(false); // Hide mobile sidebar
+          setSidebarCollapsed(true); // Collapse desktop sidebar
           setGlobalSearchMode('category');
           setGlobalSearchOpen(true);
         }
