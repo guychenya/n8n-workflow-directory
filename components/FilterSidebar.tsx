@@ -129,8 +129,8 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         ${isCollapsed ? 'lg:w-0 lg:overflow-hidden lg:p-0' : 'lg:w-80 lg:p-6'}
         top-0 left-0 h-full lg:h-auto bg-sidebar-light dark:bg-sidebar-bg border-r border-gray-200 dark:border-slate-700 
-        w-80 p-6 overflow-y-auto z-50
-        backdrop-blur-lg bg-opacity-80 dark:bg-opacity-80
+        w-80 max-w-[85vw] p-4 sm:p-6 overflow-y-auto z-50
+        backdrop-blur-lg bg-opacity-95 dark:bg-opacity-95
         shadow-2xl shadow-black/20
         before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/10 before:via-white/5 before:to-transparent before:pointer-events-none
       `}>
@@ -194,16 +194,16 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
           isExpanded={expandedSections.has('services')}
           onToggle={() => toggleSection('services')}
         >
-          <div className="max-h-64 overflow-y-auto">
+          <div className="max-h-48 sm:max-h-64 overflow-y-auto">
             {allServices.slice(0, 20).map(service => (
               <label key={service} className="flex items-center cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700 p-2 rounded">
                 <input
                   type="checkbox"
                   checked={filters.services?.includes(service) || false}
                   onChange={() => handleServiceChange(service)}
-                  className="mr-3 text-primary focus:ring-primary"
+                  className="mr-3 text-primary focus:ring-primary flex-shrink-0"
                 />
-                <span className="text-sm text-text-light dark:text-slate-300">{service}</span>
+                <span className="text-sm text-text-light dark:text-slate-300 break-words">{service}</span>
               </label>
             ))}
           </div>

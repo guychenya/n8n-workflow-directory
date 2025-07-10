@@ -22,15 +22,29 @@ export const Header: React.FC = () => {
       <div className="absolute top-0 right-0">
         <DarkModeToggle />
       </div>
-      <div className="flex justify-center items-center gap-4 mb-4">
-        <N8nLogo className="h-12 w-12 text-primary" />
-        <h1 className="text-4xl sm:text-5xl font-bold text-text-light dark:text-text-dark tracking-tight">
+      <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 mb-4">
+        <N8nLogo className="h-10 w-10 sm:h-12 sm:w-12 text-primary" />
+        <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-text-light dark:text-text-dark tracking-tight text-center sm:text-left">
           n8n Workflow Directory
         </h1>
       </div>
-      <p className="max-w-2xl mx-auto text-lg text-gray-500 dark:text-slate-400">
+      <p className="max-w-2xl mx-auto text-sm sm:text-lg text-gray-500 dark:text-slate-400 text-center px-4">
         Browse, filter, and instantly download community-built n8n workflows.
       </p>
+      
+      {/* Keyboard shortcuts hint */}
+      <div className="mt-4 flex flex-wrap justify-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-400 dark:text-slate-500">
+        <div className="flex items-center gap-1">
+          <kbd className="px-2 py-1 bg-gray-100 dark:bg-slate-700 rounded border text-xs">
+            {typeof navigator !== 'undefined' && navigator.platform.indexOf('Mac') > -1 ? '⌘K' : 'Ctrl+K'}
+          </kbd>
+          <span>Search</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <kbd className="px-2 py-1 bg-gray-100 dark:bg-slate-700 rounded border text-xs">/</kbd>
+          <span>Quick filter</span>
+        </div>
+      </div>
     </header>
   );
 };

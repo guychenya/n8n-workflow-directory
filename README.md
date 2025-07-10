@@ -4,6 +4,10 @@
 
 This application provides an enhanced user interface and experience for workflow visualization and management. The project builds upon open-source foundations while introducing new features for improved usability and functionality.
 
+**Important Note**: This site is primarily a demonstration of what can be achieved with vibe-coding techniques and rapid prototyping. It is not intended to claim any ownership over the design or concepts of the n8n workflows themselves, which belong to their original creators and the n8n community.
+
+**Disclaimer**: All content and workflows provided on this website are offered on an "as is" basis. No warranty is provided regarding the workflows, their functionality, or usability. Users are responsible for testing and validating any workflows before implementation in production environments.
+
 ## Features
 
 * **Interactive Workflow Visualization**: Break down and examine each workflow node in detail

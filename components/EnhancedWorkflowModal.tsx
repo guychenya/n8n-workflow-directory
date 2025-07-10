@@ -210,25 +210,25 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
       />
       
       {/* Modal */}
-      <div className="relative bg-white dark:bg-slate-800 rounded-xl shadow-2xl max-w-6xl w-full mx-4 max-h-[90vh] overflow-hidden
+      <div className="relative bg-white dark:bg-slate-800 rounded-xl shadow-2xl max-w-6xl w-full mx-2 sm:mx-4 max-h-[95vh] sm:max-h-[90vh] overflow-hidden
       backdrop-blur-lg bg-opacity-95 dark:bg-opacity-95
       shadow-2xl shadow-black/30
       before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/20 before:via-white/5 before:to-transparent before:pointer-events-none before:rounded-xl
       border border-white/20 dark:border-slate-600/30">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-slate-700 bg-gradient-to-r from-primary/5 to-secondary/5 dark:from-slate-700 dark:to-slate-700">
-          <div className="flex-1">
-            <h2 className="text-2xl font-bold text-text-light dark:text-text-dark mb-2">
+        <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200 dark:border-slate-700 bg-gradient-to-r from-primary/5 to-secondary/5 dark:from-slate-700 dark:to-slate-700">
+          <div className="flex-1 min-w-0">
+            <h2 className="text-lg sm:text-2xl font-bold text-text-light dark:text-text-dark mb-2 truncate">
               {workflowData?.name || workflow.title}
             </h2>
-            <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-slate-400">
-              <span className="flex items-center gap-1 bg-white dark:bg-slate-700 px-2 py-1 rounded-full">
+            <div className="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600 dark:text-slate-400 flex-wrap">
+              <span className="flex items-center gap-1 bg-white dark:bg-slate-700 px-2 py-1 rounded-full whitespace-nowrap">
                 🏷️ {workflow.category}
               </span>
-              <span className="flex items-center gap-1 bg-white dark:bg-slate-700 px-2 py-1 rounded-full">
+              <span className="flex items-center gap-1 bg-white dark:bg-slate-700 px-2 py-1 rounded-full whitespace-nowrap">
                 ⚡ {workflow.triggerType}
               </span>
-              <span className="flex items-center gap-1 bg-white dark:bg-slate-700 px-2 py-1 rounded-full">
+              <span className="flex items-center gap-1 bg-white dark:bg-slate-700 px-2 py-1 rounded-full whitespace-nowrap">
                 🔧 {workflow.complexity}
               </span>
             </div>
@@ -269,7 +269,7 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
+        <div className="p-3 sm:p-6 overflow-y-auto max-h-[calc(95vh-200px)] sm:max-h-[calc(90vh-200px)]">
           {loading && (
             <div className="flex items-center justify-center py-12">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -292,7 +292,7 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
                   <EnhancedWorkflowVisualizer workflow={workflowData} />
                   
                   {/* Quick Stats */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                     <div className="bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 p-4 rounded-lg text-center">
                       <div className="text-2xl font-bold text-primary">{workflowData.nodes.length}</div>
                       <div className="text-sm text-gray-600 dark:text-slate-400">Total Nodes</div>
@@ -323,7 +323,7 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
                   </CollapsibleSection>
 
                   <CollapsibleSection title="Workflow Statistics" icon="📊" defaultOpen={true}>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                       <div className="text-center">
                         <div className="text-2xl font-bold text-primary">{workflowData.nodes.length}</div>
                         <div className="text-sm text-gray-600 dark:text-slate-400">Total Nodes</div>
@@ -356,7 +356,7 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
                             </span>
                             {type}
                           </h4>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             {nodes.map((node) => (
                               <button
                                 key={node.id}
@@ -443,21 +443,21 @@ export const EnhancedWorkflowModal: React.FC<EnhancedWorkflowModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between p-4 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-700/50 h-[70px] flex-shrink-0">
-          <div className="text-sm text-gray-600 dark:text-slate-400 truncate">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 sm:p-4 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-700/50 flex-shrink-0">
+          <div className="text-xs sm:text-sm text-gray-600 dark:text-slate-400 truncate">
             File: {workflow.fileName}
           </div>
           <div className="flex gap-3 flex-shrink-0">
             <a
               href={`/workflows/${workflow.fileName}`}
               download={workflow.fileName}
-              className="px-4 py-2 bg-gray-200 dark:bg-slate-600 text-gray-700 dark:text-slate-200 rounded-lg hover:bg-gray-300 dark:hover:bg-slate-500 transition-colors font-medium flex items-center gap-2 text-sm whitespace-nowrap"
+              className="px-3 sm:px-4 py-2 bg-gray-200 dark:bg-slate-600 text-gray-700 dark:text-slate-200 rounded-lg hover:bg-gray-300 dark:hover:bg-slate-500 transition-colors font-medium flex items-center gap-2 text-xs sm:text-sm whitespace-nowrap"
             >
               📥 Download JSON
             </a>
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium text-sm whitespace-nowrap"
+              className="px-3 sm:px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium text-xs sm:text-sm whitespace-nowrap"
             >
               Close
             </button>

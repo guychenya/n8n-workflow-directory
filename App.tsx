@@ -1,9 +1,11 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Header } from './components/Header';
 import { FilterSidebar } from './components/FilterSidebar';
 import { WorkflowGrid } from './components/WorkflowGrid';
+import { GlobalSearch } from './components/GlobalSearch';
+import { EnhancedWorkflowModal } from './components/EnhancedWorkflowModal';
 import { workflows as allWorkflows } from './data/workflows';
-import type { FilterState, ServiceCategory } from './types';
+import type { FilterState, ServiceCategory, Workflow } from './types';
 
 function App() {
   const [filters, setFilters] = useState<FilterState>({
@@ -17,14 +19,16 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [displayedCount, setDisplayedCount] = useState(24); // Initial load: 24 workflows
+  const [globalSearchOpen, setGlobalSearchOpen] = useState(false);
+  const [globalSearchMode, setGlobalSearchMode] = useState<'global' | 'category'>('global');
+  const [selectedWorkflow, setSelectedWorkflow] = useState<Workflow | null>(null);
+  const [workflowModalOpen, setWorkflowModalOpen] = useState(false);
 
   // Debug: Log workflow count (only in development)
-  if (import.meta.env.DEV) {
+  if (import.meta.env && import.meta.env.DEV) {
     console.log('Total workflows loaded:', allWorkflows.length);
     if (allWorkflows.length > 0) {
       console.log('First workflow:', allWorkflows[0]);
-      console.log('Displayed workflows:', displayedWorkflows.length);
-      console.log('Has more workflows:', hasMoreWorkflows);
     }
   }
 
@@ -142,6 +146,45 @@ function App() {
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
   const toggleSidebarCollapsed = () => setSidebarCollapsed(!sidebarCollapsed);
 
+  // Global keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Cmd+K (Mac) or Ctrl+K (Windows/Linux) for global search
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setGlobalSearchMode('global');
+        setGlobalSearchOpen(true);
+      }
+      // "/" for category/workflow quick search
+      else if (e.key === '/' && !globalSearchOpen) {
+        // Only trigger if not focused on an input element
+        const activeElement = document.activeElement;
+        if (activeElement?.tagName !== 'INPUT' && activeElement?.tagName !== 'TEXTAREA') {
+          e.preventDefault();
+          setGlobalSearchMode('category');
+          setGlobalSearchOpen(true);
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [globalSearchOpen]);
+
+  const handleWorkflowSelect = (workflow: Workflow) => {
+    setSelectedWorkflow(workflow);
+    setWorkflowModalOpen(true);
+  };
+
+  const handleGlobalSearchClose = () => {
+    setGlobalSearchOpen(false);
+  };
+
+  const handleApplyFilters = (newFilters: FilterState) => {
+    setFilters(newFilters);
+    resetDisplayedCount();
+  };
+
   return (
     <div className="min-h-screen bg-bg-light dark:bg-bg-dark font-sans">
       <div className="flex">
@@ -167,7 +210,7 @@ function App() {
             <div className="hidden lg:block mb-6">
               <button
                 onClick={toggleSidebarCollapsed}
-                className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 text-text-light dark:text-text-dark rounded-md border border-gray-300 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors shadow-sm
+                className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white dark:bg-slate-800 text-text-light dark:text-text-dark rounded-md border border-gray-300 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors shadow-sm
                 backdrop-blur-sm bg-opacity-90 dark:bg-opacity-90
                 shadow-lg shadow-black/10 hover:shadow-xl hover:shadow-black/20
                 before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/20 before:via-white/5 before:to-transparent before:pointer-events-none before:rounded-md before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300
@@ -200,7 +243,7 @@ function App() {
             <div className="lg:hidden mb-6">
               <button
                 onClick={toggleSidebar}
-                className="flex items-center gap-2 px-4 py-2 bg-sidebar-light dark:bg-sidebar-bg text-text-light dark:text-text-dark rounded-md border border-gray-300 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
+                className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-sidebar-light dark:bg-sidebar-bg text-text-light dark:text-text-dark rounded-md border border-gray-300 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors text-sm sm:text-base"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z" />
@@ -311,7 +354,7 @@ function App() {
                         complexity: '',
                         searchTerm: ''
                       })}
-                      className="mt-4 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
+                      className="mt-4 px-3 sm:px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors text-sm sm:text-base"
                     >
                       Clear all filters
                     </button>
@@ -326,10 +369,10 @@ function App() {
                 <div className="text-center mt-8 mb-8">
                   <button
                     onClick={loadMoreWorkflows}
-                    className="px-8 py-4 bg-gradient-to-r from-primary to-accent text-white rounded-lg hover:from-primary/90 hover:to-accent/90 transition-all duration-200 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-105"
+                    className="px-4 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-primary to-accent text-white rounded-lg hover:from-primary/90 hover:to-accent/90 transition-all duration-200 font-semibold text-sm sm:text-lg shadow-lg hover:shadow-xl transform hover:scale-105"
                   >
                     Load More Workflows
-                    <span className="ml-3 text-base bg-white/20 px-3 py-1 rounded-full">
+                    <span className="ml-2 sm:ml-3 text-xs sm:text-base bg-white/20 px-2 sm:px-3 py-1 rounded-full">
                       {allFilteredWorkflows.length - displayedWorkflows.length} remaining
                     </span>
                   </button>
@@ -370,6 +413,26 @@ function App() {
           </div>
         </div>
       </div>
+
+      {/* Global Search Modal */}
+      <GlobalSearch
+        workflows={allWorkflows}
+        isOpen={globalSearchOpen}
+        onClose={handleGlobalSearchClose}
+        onWorkflowSelect={handleWorkflowSelect}
+        onApplyFilters={handleApplyFilters}
+        searchMode={globalSearchMode}
+      />
+
+      {/* Enhanced Workflow Modal */}
+      <EnhancedWorkflowModal 
+        workflow={selectedWorkflow}
+        isOpen={workflowModalOpen}
+        onClose={() => {
+          setWorkflowModalOpen(false);
+          setSelectedWorkflow(null);
+        }}
+      />
     </div>
   );
 }
