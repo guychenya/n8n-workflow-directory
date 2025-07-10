@@ -276,7 +276,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh]">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh] sm:pt-[20vh] p-2 sm:p-4">
       {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
@@ -284,26 +284,29 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
       />
       
       {/* Search Modal */}
-      <div className="relative bg-white dark:bg-slate-800 rounded-xl shadow-2xl w-full max-w-2xl mx-4 overflow-hidden
+      <div className="relative bg-white dark:bg-slate-800 rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden
       backdrop-blur-lg bg-opacity-95 dark:bg-opacity-95
       shadow-2xl shadow-black/30
       before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/20 before:via-white/5 before:to-transparent before:pointer-events-none before:rounded-xl
-      border border-white/20 dark:border-slate-600/30">
+      border border-white/20 dark:border-slate-600/30
+      max-h-[85vh] sm:max-h-[75vh]">
         
         {/* Search Input */}
-        <div className="flex items-center gap-3 p-4 border-b border-gray-200 dark:border-slate-700">
-          <div className="text-gray-400 dark:text-slate-500">
-            {searchMode === 'category' ? '/' : '🔍'}
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 p-3 sm:p-4 border-b border-gray-200 dark:border-slate-700">
+          <div className="flex items-center gap-3 flex-1">
+            <div className="text-gray-400 dark:text-slate-500">
+              {searchMode === 'category' ? '/' : '🔍'}
+            </div>
+            <input
+              ref={inputRef}
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder={multiSelectMode ? "Click items to select multiple filters..." : getSearchPlaceholder()}
+              className="flex-1 bg-transparent text-text-light dark:text-text-dark placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none text-base sm:text-lg"
+            />
           </div>
-          <input
-            ref={inputRef}
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder={multiSelectMode ? "Click items to select multiple filters..." : getSearchPlaceholder()}
-            className="flex-1 bg-transparent text-text-light dark:text-text-dark placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none text-lg"
-          />
-          <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-slate-500">
+          <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-slate-500 flex-wrap">
             {multiSelectMode && (
               <button
                 onClick={applyTempFilters}
@@ -340,7 +343,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
         {/* Search Results */}
         <div 
           ref={resultsRef}
-          className="max-h-96 overflow-y-auto"
+          className="max-h-72 sm:max-h-96 overflow-y-auto"
         >
           {results.length === 0 ? (
             <div className="p-8 text-center text-gray-500 dark:text-slate-400">
@@ -351,7 +354,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
               <button
                 key={result.id}
                 onClick={() => multiSelectMode ? handleMultiSelect(result) : handleResultSelect(result)}
-                className={`w-full flex items-center gap-3 p-4 text-left transition-colors hover:bg-gray-50 dark:hover:bg-slate-700 ${
+                className={`w-full flex items-center gap-3 p-3 sm:p-4 text-left transition-colors hover:bg-gray-50 dark:hover:bg-slate-700 ${
                   index === selectedIndex 
                     ? 'bg-primary/10 dark:bg-primary/20 border-r-2 border-primary' 
                     : ''
@@ -367,16 +370,16 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
                   {getResultIcon(result)}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="font-medium text-text-light dark:text-text-dark truncate">
+                  <div className="font-medium text-text-light dark:text-text-dark truncate text-sm sm:text-base">
                     {result.title}
                   </div>
                   {result.subtitle && (
-                    <div className="text-sm text-gray-500 dark:text-slate-400 truncate">
+                    <div className="text-xs sm:text-sm text-gray-500 dark:text-slate-400 truncate">
                       {result.subtitle}
                     </div>
                   )}
                 </div>
-                <div className="text-xs text-gray-400 dark:text-slate-500 flex-shrink-0">
+                <div className="text-xs text-gray-400 dark:text-slate-500 flex-shrink-0 hidden sm:block">
                   {result.type === 'category' ? 'Category' : 'Workflow'}
                 </div>
               </button>

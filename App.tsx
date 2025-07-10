@@ -171,6 +171,17 @@ function App() {
           setGlobalSearchOpen(true);
         }
       }
+      // "S" for showing/expanding filter sidebar
+      else if (e.key === 's' && !globalSearchOpen) {
+        // Only trigger if not focused on an input element
+        const activeElement = document.activeElement;
+        if (activeElement?.tagName !== 'INPUT' && activeElement?.tagName !== 'TEXTAREA') {
+          e.preventDefault();
+          // Show/expand sidebar
+          setSidebarOpen(true); // Show mobile sidebar
+          setSidebarCollapsed(false); // Expand desktop sidebar
+        }
+      }
     };
 
     document.addEventListener('keydown', handleKeyDown);
